@@ -329,10 +329,12 @@
 
         const cMatSolid = new THREE.MeshStandardMaterial({ color: 0x777777, metalness: 0.95, roughness: 0.1 });
         const cObjSolid = new THREE.Mesh(cGeo, cMatSolid);
+        cObjSolid.scale.set(2, 2, 2);
         cScene.add(cObjSolid);
 
         const cMatWire = new THREE.MeshBasicMaterial({ color: 0xcccccc, wireframe: true, transparent: true, opacity: 0.22 });
         const cObjWire = new THREE.Mesh(cGeo, cMatWire);
+        cObjWire.scale.set(2, 2, 2);
         cScene.add(cObjWire);
 
         cCamera.position.z = 16;
