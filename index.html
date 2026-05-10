@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kio | Designing the unusual</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,900;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* 通常モード: オフホワイトのグラデーション */
+            --bg-start: #f0ede5;
+            --bg-end: #e2dfd5;
+            --text: #0a0a0a;
+            --dark-section-bg: rgba(10, 10, 10, 0.95);
+            --dark-section-text: #f0ede5;
+        }
+
+        body.dark-mode {
+            /* リバーシモード: 漆黒のグラデーション */
+            --bg-start: #0a0a0a;
+            --bg-end: #1a1a1a;
+            --text: #f0ede5;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+            background-attachment: fixed;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            transition: background 1.2s ease, color 0.8s ease;
+            overflow-x: hidden;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 30px 50px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 100;
+            font-size: 0.8rem; font-weight: bold; letter-spacing: 0.1em;
+        }
+
+        section {
+            min-height: 100vh; position: relative; z-index: 1;
+            padding: 120px 50px; display: flex; flex-direction: column; justify-content: center;
+        }
+
+        /* 01 Hero */
+        .hero-title { font-size: 11vw; line-height: 0.9; font-weight: 900; letter-spacing: -0.03em; }
+        .hero-title i { font-weight: 400; font-style: italic; }
+        .hero-sub { position: absolute; bottom: 80px; right: 50px; text-align: right; max-width: 400px; font-size: 0.9rem; }
+
+        /* 02 Profile */
+        .profile-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 15px; margin-top: 40px; }
+        .card { background: rgba(255,255,255,0.2); backdrop-filter: blur(15px); border-radius: 24px; padding: 40px; border: 1px solid rgba(255,255,255,0.1); }
+        .bento-main { grid-row: span 3; background: var(--text) !important; color: var(--bg-start); }
+        .card h3 { font-size: 1.8rem; margin-top: 15px; font-weight: 900; }
+
+        /* 03 Selected Work */
+        .work-section { background-color: var(--dark-section-bg); color: var(--dark-section-text); width: 100vw; margin-left: -50px; padding: 120px 50px; }
+        .work-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; }
+        .work-title { font-size: 8rem; font-weight: 900; letter-spacing: -0.02em; }
+        .work-count { font-size: 0.8rem; opacity: 0.6; margin-bottom: 20px; }
+        .project-list { border-top: 1px solid rgba(255,255,255,0.1); }
+        .project-item {
+            display: grid; grid-template-columns: 50px 1.5fr 1fr 0.8fr 0.5fr; align-items: center;
+            padding: 40px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+            transition: 0.4s ease; cursor: pointer;
+        }
+        .project-item:hover { opacity: 0.5; }
+        .p-num { font-size: 0.9rem; opacity: 0.5; }
+        .p-name { font-size: 3.5rem; font-weight: 900; }
+
+        /* 04 Career */
+        .career-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; }
+        .timeline { position: relative; padding-left: 20px; border-left: 1px solid rgba(0,0,0,0.1); }
+        .dark-mode .timeline { border-left-color: rgba(255,255,255,0.1); }
+        .timeline-node { position: relative; padding-bottom: 40px; }
+        .timeline-node::before {
+            content: ''; position: absolute; left: -24px; top: 5px;
+            width: 7px; height: 7px; background: var(--text); border-radius: 50%;
+        }
+        .time-year { font-size: 0.8rem; opacity: 0.5; margin-bottom: 5px; display: block; }
+        .time-title { font-size: 1.2rem; font-weight: 900; }
+
+        .career-cards { display: flex; flex-direction: column; gap: 20px; }
+        .career-card { border-radius: 32px; padding: 50px; min-height: 300px; display: flex; flex-direction: column; }
+        .card-white { background: #ffffff; color: #000000; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .card-black { background: #000000; color: #ffffff; }
+        .card-q-text { font-size: 2.4rem; font-weight: 900; line-height: 1.2; margin: 30px 0; }
+
+        /* Transition Button */
+        .mode-btn { cursor: pointer; border: 1px solid var(--text); padding: 5px 15px; border-radius: 30px; font-size: 0.6rem; transition: 0.3s; }
+        .mode-btn:hover { background: var(--text); color: var(--bg-start); }
+
+        /* 05 Contact */
+        .btn-group { margin-top: 50px; display: flex; gap: 15px; }
+        .btn { padding: 18px 35px; border-radius: 50px; border: 1px solid var(--text); text-decoration: none; color: var(--text); font-weight: 700; }
+        .btn-black { background: var(--text); color: var(--bg-start); }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div>KIO © 2025</div>
+        <div style="display:flex; align-items:center; gap:20px;">
+            <div class="mode-btn" onclick="toggleMode()">TRANSITION</div>
+            <div style="font-size: 0.7rem; letter-spacing: 0.2em;" id="clock">● --:--:-- JST</div>
+        </div>
+    </nav>
+
+    <div id="canvas-container"></div>
+
+    <main class="content">
+        <section>
+            <div class="hero-title">Designing<br><i>the unusual,</i><br>with care.</div>
+            <div class="hero-sub">「変人には変人なりのものがある。それは他の人が好まない事を好んでやること！」 — KIO</div>
+        </section>
+
+        <section>
+            <div class="profile-grid">
+                <div class="card bento-main">
+                    <h2 style="font-size: 5rem; font-weight: 900;">Kio</h2>
+                    <p style="margin-top:20px;">2004年生まれ。Layout Artistを経て、Google UX Design認定を取得。AIと人の感性を掛け合わせ、記憶に残る体験を作る。</p>
+                </div>
+                <div class="card"><h3>01 深く考え、形にする</h3></div>
+                <div class="card"><h3>02 記憶に残る体験</h3></div>
+                <div class="card"><h3>03 自ら考え、行動する</h3></div>
+            </div>
+        </section>
+
+        <section class="work-section">
+            <div class="work-header">
+                <div>
+                    <small style="display:block; margin-bottom:10px;">03 — SELECTED WORK</small>
+                    <div class="work-title">Projects.</div>
+                </div>
+                <div class="work-count">5 pieces · 2022—2024</div>
+            </div>
+            <div class="project-list">
+                <div class="project-item"><div class="p-num">01</div><div class="p-name">My Portfolio</div><div class="p-desc">Self-branded site</div><div class="p-cat">WEB</div><div class="p-year">2024</div></div>
+                <div class="project-item"><div class="p-num">02</div><div class="p-name">MOVIE BUDDY</div><div class="p-desc">Companion app</div><div class="p-cat">MOBILE</div><div class="p-year">2024</div></div>
+                <div class="project-item"><div class="p-num">03</div><div class="p-name">Emma</div><div class="p-desc">Identity</div><div class="p-cat">GRAPHIC</div><div class="p-year">2023</div></div>
+                <div class="project-item"><div class="p-num">04</div><div class="p-name">Relay</div><div class="p-desc">Editorial</div><div class="p-cat">GRAPHIC</div><div class="p-year">2023</div></div>
+                <div class="project-item"><div class="p-num">05</div><div class="p-name">ENJIN</div><div class="p-desc">Brand mark</div><div class="p-cat">GRAPHIC</div><div class="p-year">2022</div></div>
+            </div>
+        </section>
+
+        <section id="career">
+            <small style="margin-bottom: 20px; display: block; opacity: 0.6;">04 — CAREER</small>
+            <h2 style="font-size: 5rem; font-weight: 900; margin-bottom: 60px;">Path so far.</h2>
+            <div class="career-layout">
+                <div class="timeline">
+                    <div class="timeline-node"><span class="time-year">2024</span><div class="time-title">Layout Artist — Third Space Production</div></div>
+                    <div class="timeline-node"><span class="time-year">2023</span><div class="time-title">Customer Service — LULL, Inc.</div></div>
+                    <div class="timeline-node"><span class="time-year">2022</span><div class="time-title">Google UX Design Professional</div></div>
+                    <div class="timeline-node"><span class="time-year">2019</span><div class="time-title">Self-study: AI & Marketing</div></div>
+                </div>
+                <div class="career-cards">
+                    <div class="career-card card-white">
+                        <small style="opacity:0.5; letter-spacing:0.1em;">A QUESTION</small>
+                        <div class="card-q-text">この人生が終わるまで、必ずやってみたいことは何？</div>
+                        <div style="font-size:0.8rem; opacity:0.6;">— Kio asks you.</div>
+                    </div>
+                    <div class="career-card card-black">
+                        <small style="opacity:0.5; letter-spacing:0.1em;">CURRENTLY</small>
+                        <div class="card-q-text" style="font-size: 1.8rem;">AIと感性を編む、次のプロジェクトを構想中。</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="hero-title">Let's make<br>something <i>unusual.</i></div>
+            <div class="btn-group">
+                <a href="mailto:hello@kio-portfolio.com" class="btn btn-black">hello@kio-portfolio.com →</a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- Three.js Background ---
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        const geometry = new THREE.TorusKnotGeometry(2.5, 0.7, 180, 24);
+        const material = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true, transparent: true, opacity: 0.12 });
+        const mainObj = new THREE.Mesh(geometry, material);
+        scene.add(mainObj);
+
+        const starsGeo = new THREE.BufferGeometry();
+        const starsCount = 3000;
+        const posArray = new Float32Array(starsCount * 3);
+        for(let i=0; i<starsCount*3; i++) posArray[i] = (Math.random() - 0.5) * 40;
+        starsGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const starsMat = new THREE.PointsMaterial({ size: 0.015, color: 0x000000, transparent: true, opacity: 0.25 });
+        const starsMesh = new THREE.Points(starsGeo, starsMat);
+        scene.add(starsMesh);
+
+        camera.position.z = 10;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            mainObj.rotation.y += 0.003;
+            mainObj.rotation.x += 0.001;
+            starsMesh.rotation.y += 0.0003;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Scroll Animation
+        gsap.to(camera.position, {
+            z: -15,
+            scrollTrigger: { trigger: ".content", start: "top top", end: "bottom bottom", scrub: 2 }
+        });
+
+        // Toggle Function
+        function toggleMode() {
+            const isDark = document.body.classList.toggle('dark-mode');
+            gsap.to(material.color, { r: isDark?1:0, g: isDark?1:0, b: isDark?1:0, duration: 0.8 });
+            gsap.to(starsMat.color, { r: isDark?1:0, g: isDark?1:0, b: isDark?1:0, duration: 0.8 });
+        }
+
+        // Live clock (JST = UTC+9)
+        function updateClock() {
+            const now = new Date();
+            const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+            const h = String(jst.getUTCHours()).padStart(2, '0');
+            const m = String(jst.getUTCMinutes()).padStart(2, '0');
+            const s = String(jst.getUTCSeconds()).padStart(2, '0');
+            document.getElementById('clock').textContent = `● ${h}:${m}:${s} JST`;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
