@@ -45,12 +45,21 @@
             font-size: 0.8rem; font-weight: bold; letter-spacing: 0.1em;
         }
 
-        /* 全セクション共通: ちょうど1画面に収める */
         section {
             height: 100vh; overflow: hidden;
             position: relative; z-index: 1;
             padding: 88px 50px 48px;
             display: flex; flex-direction: column; justify-content: center;
+        }
+
+        /* 背景キャンバス共通 */
+        .section-canvas {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+        }
+        .section-content {
+            position: relative; z-index: 1; width: 100%;
         }
 
         /* 01 Hero */
@@ -72,7 +81,7 @@
         .card {
             background: rgba(255,255,255,0.2); backdrop-filter: blur(15px);
             border-radius: 20px; padding: 28px;
-            border: 1px solid var(--divider);
+            border: 1px solid rgba(255,255,255,0.1);
         }
         .bento-main { grid-row: span 3; background: var(--text) !important; color: var(--bg-start); }
         .card h3 { font-size: 1.35rem; margin-top: 10px; font-weight: 900; }
@@ -97,8 +106,7 @@
 
         /* 04 Career */
         .career-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start; }
-        .timeline { position: relative; padding-left: 20px; border-left: 1px solid rgba(0,0,0,0.1); }
-        .dark-mode .timeline { border-left-color: var(--divider); }
+        .timeline { position: relative; padding-left: 20px; border-left: 1px solid var(--divider); }
         .timeline-node { position: relative; padding-bottom: 2.5vh; }
         .timeline-node::before {
             content: ''; position: absolute; left: -24px; top: 5px;
@@ -109,8 +117,8 @@
 
         .career-cards { display: flex; flex-direction: column; gap: 1.5vh; }
         .career-card { border-radius: 24px; padding: 28px 32px; display: flex; flex-direction: column; }
-        .card-white { background: #ffffff; color: #000000; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .card-black { background: #000000; color: #ffffff; }
+        .card-white { background: rgba(255,255,255,0.85); color: #000000; box-shadow: 0 10px 30px rgba(0,0,0,0.05); backdrop-filter: blur(10px); }
+        .card-black { background: rgba(0,0,0,0.85); color: #ffffff; backdrop-filter: blur(10px); }
         .card-q-text { font-size: clamp(1.2rem, 1.8vw, 2rem); font-weight: 900; line-height: 1.2; margin: 12px 0; }
 
         /* Transition Button */
@@ -173,42 +181,48 @@
 
         <!-- 03 Selected Work -->
         <section class="work-section">
-            <div class="work-header">
-                <div>
-                    <small style="display:block; margin-bottom:8px;">03 — SELECTED WORK</small>
-                    <div class="work-title">Projects.</div>
+            <canvas id="work-canvas" class="section-canvas"></canvas>
+            <div class="section-content">
+                <div class="work-header">
+                    <div>
+                        <small style="display:block; margin-bottom:8px;">03 — SELECTED WORK</small>
+                        <div class="work-title">Projects.</div>
+                    </div>
+                    <div class="work-count">5 pieces · 2022—2024</div>
                 </div>
-                <div class="work-count">5 pieces · 2022—2024</div>
-            </div>
-            <div class="project-list">
-                <div class="project-item"><div class="p-num">01</div><div class="p-name">My Portfolio</div><div class="p-desc">Self-branded site</div><div class="p-cat">WEB</div><div class="p-year">2024</div></div>
-                <div class="project-item"><div class="p-num">02</div><div class="p-name">MOVIE BUDDY</div><div class="p-desc">Companion app</div><div class="p-cat">MOBILE</div><div class="p-year">2024</div></div>
-                <div class="project-item"><div class="p-num">03</div><div class="p-name">Emma</div><div class="p-desc">Identity</div><div class="p-cat">GRAPHIC</div><div class="p-year">2023</div></div>
-                <div class="project-item"><div class="p-num">04</div><div class="p-name">Relay</div><div class="p-desc">Editorial</div><div class="p-cat">GRAPHIC</div><div class="p-year">2023</div></div>
-                <div class="project-item"><div class="p-num">05</div><div class="p-name">ENJIN</div><div class="p-desc">Brand mark</div><div class="p-cat">GRAPHIC</div><div class="p-year">2022</div></div>
+                <div class="project-list">
+                    <div class="project-item"><div class="p-num">01</div><div class="p-name">My Portfolio</div><div class="p-desc">Self-branded site</div><div class="p-cat">WEB</div><div class="p-year">2024</div></div>
+                    <div class="project-item"><div class="p-num">02</div><div class="p-name">MOVIE BUDDY</div><div class="p-desc">Companion app</div><div class="p-cat">MOBILE</div><div class="p-year">2024</div></div>
+                    <div class="project-item"><div class="p-num">03</div><div class="p-name">Emma</div><div class="p-desc">Identity</div><div class="p-cat">GRAPHIC</div><div class="p-year">2023</div></div>
+                    <div class="project-item"><div class="p-num">04</div><div class="p-name">Relay</div><div class="p-desc">Editorial</div><div class="p-cat">GRAPHIC</div><div class="p-year">2023</div></div>
+                    <div class="project-item"><div class="p-num">05</div><div class="p-name">ENJIN</div><div class="p-desc">Brand mark</div><div class="p-cat">GRAPHIC</div><div class="p-year">2022</div></div>
+                </div>
             </div>
         </section>
 
         <!-- 04 Career -->
         <section id="career">
-            <small style="margin-bottom: 16px; display: block; opacity: 0.6;">04 — CAREER</small>
-            <h2 style="font-size: clamp(2.5rem, 4vw, 4.5rem); font-weight: 900; margin-bottom: 3vh;">Path so far.</h2>
-            <div class="career-layout">
-                <div class="timeline">
-                    <div class="timeline-node"><span class="time-year">2024</span><div class="time-title">Layout Artist — Third Space Production</div></div>
-                    <div class="timeline-node"><span class="time-year">2023</span><div class="time-title">Customer Service — LULL, Inc.</div></div>
-                    <div class="timeline-node"><span class="time-year">2022</span><div class="time-title">Google UX Design Professional</div></div>
-                    <div class="timeline-node"><span class="time-year">2019</span><div class="time-title">Self-study: AI & Marketing</div></div>
-                </div>
-                <div class="career-cards">
-                    <div class="career-card card-white">
-                        <small style="opacity:0.5; letter-spacing:0.1em;">A QUESTION</small>
-                        <div class="card-q-text">この人生が終わるまで、必ずやってみたいことは何？</div>
-                        <div style="font-size:0.8rem; opacity:0.6;">— Kio asks you.</div>
+            <canvas id="career-canvas" class="section-canvas"></canvas>
+            <div class="section-content">
+                <small style="margin-bottom: 16px; display: block; opacity: 0.6;">04 — CAREER</small>
+                <h2 style="font-size: clamp(2.5rem, 4vw, 4.5rem); font-weight: 900; margin-bottom: 3vh;">Path so far.</h2>
+                <div class="career-layout">
+                    <div class="timeline">
+                        <div class="timeline-node"><span class="time-year">2024</span><div class="time-title">Layout Artist — Third Space Production</div></div>
+                        <div class="timeline-node"><span class="time-year">2023</span><div class="time-title">Customer Service — LULL, Inc.</div></div>
+                        <div class="timeline-node"><span class="time-year">2022</span><div class="time-title">Google UX Design Professional</div></div>
+                        <div class="timeline-node"><span class="time-year">2019</span><div class="time-title">Self-study: AI & Marketing</div></div>
                     </div>
-                    <div class="career-card card-black">
-                        <small style="opacity:0.5; letter-spacing:0.1em;">CURRENTLY</small>
-                        <div class="card-q-text" style="font-size: clamp(1rem, 1.5vw, 1.7rem);">AIと感性を編む、次のプロジェクトを構想中。</div>
+                    <div class="career-cards">
+                        <div class="career-card card-white">
+                            <small style="opacity:0.5; letter-spacing:0.1em;">A QUESTION</small>
+                            <div class="card-q-text">この人生が終わるまで、必ずやってみたいことは何？</div>
+                            <div style="font-size:0.8rem; opacity:0.6;">— Kio asks you.</div>
+                        </div>
+                        <div class="career-card card-black">
+                            <small style="opacity:0.5; letter-spacing:0.1em;">CURRENTLY</small>
+                            <div class="card-q-text" style="font-size: clamp(1rem, 1.5vw, 1.7rem);">AIと感性を編む、次のプロジェクトを構想中。</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -234,7 +248,9 @@
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        // --- Three.js Background ---
+        // =========================================
+        // 01 Background TorusKnot (scroll zoom)
+        // =========================================
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -249,7 +265,7 @@
         const starsGeo = new THREE.BufferGeometry();
         const starsCount = 3000;
         const posArray = new Float32Array(starsCount * 3);
-        for(let i=0; i<starsCount*3; i++) posArray[i] = (Math.random() - 0.5) * 40;
+        for(let i = 0; i < starsCount * 3; i++) posArray[i] = (Math.random() - 0.5) * 40;
         starsGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
         const starsMat = new THREE.PointsMaterial({ size: 0.015, color: 0x000000, transparent: true, opacity: 0.25 });
         const starsMesh = new THREE.Points(starsGeo, starsMat);
@@ -271,10 +287,236 @@
             scrollTrigger: { trigger: ".content", start: "top top", end: "bottom bottom", scrub: 2 }
         });
 
+        // =========================================
+        // 03 Work Section — Wave Particle Grid
+        // =========================================
+        const workCanvas = document.getElementById('work-canvas');
+        const wScene = new THREE.Scene();
+        const wCamera = new THREE.PerspectiveCamera(72, 1, 0.1, 1000);
+        const wRenderer = new THREE.WebGLRenderer({ canvas: workCanvas, antialias: false, alpha: true });
+        wRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        function resizeWorkCanvas() {
+            const w = workCanvas.clientWidth, h = workCanvas.clientHeight;
+            wCamera.aspect = w / h;
+            wCamera.updateProjectionMatrix();
+            wRenderer.setSize(w, h, false);
+        }
+        resizeWorkCanvas();
+
+        // 22×22 grid in XZ plane, wave on Y
+        const wCols = 22, wRows = 22;
+        const wCount = wCols * wRows;
+        const wGeo = new THREE.BufferGeometry();
+        const wPos = new Float32Array(wCount * 3);
+        const wBX = [], wBZ = [];
+
+        for(let i = 0; i < wCols; i++) {
+            for(let j = 0; j < wRows; j++) {
+                const idx = i * wRows + j;
+                const x = (i - wCols / 2) * 1.4;
+                const z = (j - wRows / 2) * 1.4;
+                wPos[idx * 3] = x;
+                wPos[idx * 3 + 1] = 0;
+                wPos[idx * 3 + 2] = z;
+                wBX.push(x);
+                wBZ.push(z);
+            }
+        }
+
+        wGeo.setAttribute('position', new THREE.BufferAttribute(wPos, 3));
+        const wMat = new THREE.PointsMaterial({ size: 0.07, color: 0x000000, transparent: true, opacity: 0.22 });
+        const wPoints = new THREE.Points(wGeo, wMat);
+        wScene.add(wPoints);
+
+        // Camera: slight angle from above
+        wCamera.position.set(0, 13, 7);
+        wCamera.lookAt(0, 0, 0);
+
+        let wTime = 0;
+        function animateWork() {
+            requestAnimationFrame(animateWork);
+            wTime += 0.014;
+            const pos = wPoints.geometry.attributes.position.array;
+            for(let i = 0; i < wCount; i++) {
+                pos[i * 3 + 1] = Math.sin(wBX[i] * 0.5 + wTime) * Math.cos(wBZ[i] * 0.5 + wTime * 0.7) * 0.9;
+            }
+            wPoints.geometry.attributes.position.needsUpdate = true;
+            wRenderer.render(wScene, wCamera);
+        }
+        animateWork();
+
+        // =========================================
+        // 04 Career Section — Constellation Network
+        // =========================================
+        const careerCanvas = document.getElementById('career-canvas');
+        const caScene = new THREE.Scene();
+        const caCamera = new THREE.PerspectiveCamera(55, 1, 0.1, 1000);
+        const caRenderer = new THREE.WebGLRenderer({ canvas: careerCanvas, antialias: true, alpha: true });
+        caRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        function resizeCareerCanvas() {
+            const w = careerCanvas.clientWidth, h = careerCanvas.clientHeight;
+            caCamera.aspect = w / h;
+            caCamera.updateProjectionMatrix();
+            caRenderer.setSize(w, h, false);
+        }
+        resizeCareerCanvas();
+
+        const caGroup = new THREE.Group();
+        caScene.add(caGroup);
+
+        // 16 nodes distributed on a sphere surface
+        const caNodeCount = 16;
+        const caNodes = [];
+        const caNodeMat = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.4 });
+        const caNodeGeo = new THREE.SphereGeometry(0.07, 8, 8);
+
+        // Fibonacci sphere distribution for even spacing
+        const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+        for(let i = 0; i < caNodeCount; i++) {
+            const y = 1 - (i / (caNodeCount - 1)) * 2;
+            const r = Math.sqrt(1 - y * y);
+            const theta = goldenAngle * i;
+            const scale = 3.2;
+            const n = { x: r * Math.cos(theta) * scale, y: y * scale, z: r * Math.sin(theta) * scale };
+            caNodes.push(n);
+            const mesh = new THREE.Mesh(caNodeGeo, caNodeMat);
+            mesh.position.set(n.x, n.y, n.z);
+            caGroup.add(mesh);
+        }
+
+        // Edges between nodes closer than threshold
+        const caEdgeVerts = [];
+        for(let i = 0; i < caNodeCount; i++) {
+            for(let j = i + 1; j < caNodeCount; j++) {
+                const dx = caNodes[i].x - caNodes[j].x;
+                const dy = caNodes[i].y - caNodes[j].y;
+                const dz = caNodes[i].z - caNodes[j].z;
+                if(Math.sqrt(dx*dx + dy*dy + dz*dz) < 3.6) {
+                    caEdgeVerts.push(caNodes[i].x, caNodes[i].y, caNodes[i].z);
+                    caEdgeVerts.push(caNodes[j].x, caNodes[j].y, caNodes[j].z);
+                }
+            }
+        }
+
+        const caEdgeGeo = new THREE.BufferGeometry();
+        caEdgeGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(caEdgeVerts), 3));
+        const caEdgeMat = new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.13 });
+        caGroup.add(new THREE.LineSegments(caEdgeGeo, caEdgeMat));
+
+        caCamera.position.z = 9;
+
+        function animateCareer() {
+            requestAnimationFrame(animateCareer);
+            caGroup.rotation.y += 0.0025;
+            caGroup.rotation.x += 0.0007;
+            caRenderer.render(caScene, caCamera);
+        }
+        animateCareer();
+
+        // =========================================
+        // 05 Contact — Metallic TorusKnot + Orbiting Particles
+        // =========================================
+        const contactCanvas = document.getElementById('contact-canvas');
+        const cScene = new THREE.Scene();
+        const cCamera = new THREE.PerspectiveCamera(55, 1, 0.1, 1000);
+        const cRenderer = new THREE.WebGLRenderer({ canvas: contactCanvas, antialias: true, alpha: true });
+        cRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        function resizeContactCanvas() {
+            const w = contactCanvas.clientWidth, h = contactCanvas.clientHeight;
+            cCamera.aspect = w / h;
+            cCamera.updateProjectionMatrix();
+            cRenderer.setSize(w, h, false);
+        }
+        resizeContactCanvas();
+
+        // Lighting
+        cScene.add(new THREE.AmbientLight(0xffffff, 0.4));
+        const cLight1 = new THREE.DirectionalLight(0xffffff, 3);
+        cLight1.position.set(6, 6, 6);
+        cScene.add(cLight1);
+        const cLight2 = new THREE.PointLight(0x88aaff, 2, 60);
+        cLight2.position.set(-6, 4, 2);
+        cScene.add(cLight2);
+        const cLight3 = new THREE.PointLight(0xffffff, 1.5, 60);
+        cLight3.position.set(3, -4, 5);
+        cScene.add(cLight3);
+
+        // TorusKnot
+        const cGeo = new THREE.TorusKnotGeometry(2.8, 0.72, 300, 36);
+        const cMatSolid = new THREE.MeshStandardMaterial({ color: 0x777777, metalness: 0.95, roughness: 0.1 });
+        const cObjSolid = new THREE.Mesh(cGeo, cMatSolid);
+        cObjSolid.scale.set(2, 2, 2);
+        cScene.add(cObjSolid);
+
+        const cMatWire = new THREE.MeshBasicMaterial({ color: 0xcccccc, wireframe: true, transparent: true, opacity: 0.22 });
+        const cObjWire = new THREE.Mesh(cGeo, cMatWire);
+        cObjWire.scale.set(2, 2, 2);
+        cScene.add(cObjWire);
+
+        // Orbiting particles (3 rings at different tilts & speeds)
+        const orbitRings = [
+            { count: 24, radius: 7.5, speed: 0.006, tilt: 0.3 },
+            { count: 18, radius: 8.8, speed: -0.004, tilt: 1.1 },
+            { count: 14, radius: 10.0, speed: 0.003, tilt: 2.0 },
+        ];
+
+        const orbitParticles = orbitRings.map(ring => {
+            const geo = new THREE.BufferGeometry();
+            const pos = new Float32Array(ring.count * 3);
+            const phases = Array.from({ length: ring.count }, (_, i) => (i / ring.count) * Math.PI * 2);
+            geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+            const mat = new THREE.PointsMaterial({ size: 0.12, color: 0x999999, transparent: true, opacity: 0.55 });
+            const points = new THREE.Points(geo, mat);
+            cScene.add(points);
+            return { points, geo, phases, ...ring };
+        });
+
+        cCamera.position.z = 16;
+
+        let cTime = 0;
+        function animateContact() {
+            requestAnimationFrame(animateContact);
+            cTime += 0.01;
+
+            // Torus rotation
+            cObjSolid.rotation.y += 0.004;
+            cObjSolid.rotation.x += 0.0012;
+            cObjWire.rotation.copy(cObjSolid.rotation);
+
+            // Update each orbit ring
+            orbitParticles.forEach(ring => {
+                const pos = ring.geo.attributes.position.array;
+                for(let i = 0; i < ring.count; i++) {
+                    const angle = ring.phases[i] + cTime * ring.speed * 60;
+                    pos[i * 3]     = ring.radius * Math.cos(angle);
+                    pos[i * 3 + 1] = ring.radius * Math.sin(angle) * Math.sin(ring.tilt);
+                    pos[i * 3 + 2] = ring.radius * Math.sin(angle) * Math.cos(ring.tilt);
+                }
+                ring.geo.attributes.position.needsUpdate = true;
+            });
+
+            cRenderer.render(cScene, cCamera);
+        }
+        animateContact();
+
+        // =========================================
+        // Dark/Light Mode Toggle
+        // =========================================
         function toggleMode() {
             const isDark = document.body.classList.toggle('dark-mode');
-            gsap.to(material.color, { r: isDark?1:0, g: isDark?1:0, b: isDark?1:0, duration: 0.8 });
-            gsap.to(starsMat.color, { r: isDark?1:0, g: isDark?1:0, b: isDark?1:0, duration: 0.8 });
+            const c = isDark ? 1 : 0;
+
+            // Background torus & stars
+            gsap.to(material.color, { r: c, g: c, b: c, duration: 0.8 });
+            gsap.to(starsMat.color, { r: c, g: c, b: c, duration: 0.8 });
+            // Work wave grid
+            gsap.to(wMat.color, { r: c, g: c, b: c, duration: 0.8 });
+            // Career constellation
+            gsap.to(caNodeMat.color, { r: c, g: c, b: c, duration: 0.8 });
+            gsap.to(caEdgeMat.color, { r: c, g: c, b: c, duration: 0.8 });
         }
 
         // Live clock (JST = UTC+9)
@@ -293,58 +535,10 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+            resizeWorkCanvas();
+            resizeCareerCanvas();
             resizeContactCanvas();
         });
-
-        // --- Contact Section 3D ---
-        const contactCanvas = document.getElementById('contact-canvas');
-        const cScene = new THREE.Scene();
-        const cCamera = new THREE.PerspectiveCamera(55, 1, 0.1, 1000);
-        const cRenderer = new THREE.WebGLRenderer({ canvas: contactCanvas, antialias: true, alpha: true });
-        cRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-        function resizeContactCanvas() {
-            const w = contactCanvas.clientWidth;
-            const h = contactCanvas.clientHeight;
-            cCamera.aspect = w / h;
-            cCamera.updateProjectionMatrix();
-            cRenderer.setSize(w, h, false);
-        }
-        resizeContactCanvas();
-
-        cScene.add(new THREE.AmbientLight(0xffffff, 0.4));
-        const cLight1 = new THREE.DirectionalLight(0xffffff, 3);
-        cLight1.position.set(6, 6, 6);
-        cScene.add(cLight1);
-        const cLight2 = new THREE.PointLight(0x88aaff, 2, 60);
-        cLight2.position.set(-6, 4, 2);
-        cScene.add(cLight2);
-        const cLight3 = new THREE.PointLight(0xffffff, 1.5, 60);
-        cLight3.position.set(3, -4, 5);
-        cScene.add(cLight3);
-
-        const cGeo = new THREE.TorusKnotGeometry(2.8, 0.72, 300, 36);
-
-        const cMatSolid = new THREE.MeshStandardMaterial({ color: 0x777777, metalness: 0.95, roughness: 0.1 });
-        const cObjSolid = new THREE.Mesh(cGeo, cMatSolid);
-        cObjSolid.scale.set(2, 2, 2);
-        cScene.add(cObjSolid);
-
-        const cMatWire = new THREE.MeshBasicMaterial({ color: 0xcccccc, wireframe: true, transparent: true, opacity: 0.22 });
-        const cObjWire = new THREE.Mesh(cGeo, cMatWire);
-        cObjWire.scale.set(2, 2, 2);
-        cScene.add(cObjWire);
-
-        cCamera.position.z = 16;
-
-        function animateContact() {
-            requestAnimationFrame(animateContact);
-            cObjSolid.rotation.y += 0.004;
-            cObjSolid.rotation.x += 0.0012;
-            cObjWire.rotation.copy(cObjSolid.rotation);
-            cRenderer.render(cScene, cCamera);
-        }
-        animateContact();
     </script>
 </body>
 </html>
