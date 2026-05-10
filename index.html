@@ -15,14 +15,12 @@
             --text: #0a0a0a;
             --divider: rgba(0, 0, 0, 0.12);
         }
-
         body.dark-mode {
             --bg-start: #0a0a0a;
             --bg-end: #1a1a1a;
             --text: #f0ede5;
             --divider: rgba(255, 255, 255, 0.12);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
@@ -32,14 +30,11 @@
             transition: background 1.2s ease, color 0.8s ease;
             overflow-x: hidden;
         }
-
         #canvas-container {
             position: fixed; top: 0; left: 0;
             width: 100vw; height: 100vh;
             z-index: 0; pointer-events: none;
         }
-
-        /* Nav */
         nav {
             position: fixed; top: 0; width: 100%; padding: 24px 50px;
             display: flex; justify-content: space-between; align-items: center; z-index: 100;
@@ -47,8 +42,6 @@
         }
         .nav-right { display: flex; align-items: center; gap: 20px; }
         #clock { font-size: 0.7rem; letter-spacing: 0.2em; }
-
-        /* Section base */
         section {
             height: 100vh; overflow: hidden;
             position: relative; z-index: 1;
@@ -63,27 +56,17 @@
         .section-content { position: relative; z-index: 1; width: 100%; }
 
         /* 01 Hero */
-        .hero-title {
-            font-size: clamp(3.5rem, 9vw, 130px);
-            line-height: 0.9; font-weight: 900; letter-spacing: -0.03em;
-        }
+        .hero-title { font-size: clamp(3.5rem, 9vw, 130px); line-height: 0.9; font-weight: 900; letter-spacing: -0.03em; }
         .hero-title i { font-weight: 400; font-style: italic; }
-        .hero-sub {
-            position: absolute; bottom: 40px; right: 50px;
-            text-align: right; max-width: 380px; font-size: 0.85rem; line-height: 1.6;
-        }
+        .hero-sub { position: absolute; bottom: 40px; right: 50px; text-align: right; max-width: 380px; font-size: 0.85rem; line-height: 1.6; }
 
         /* 02 Profile */
-        .profile-grid {
-            display: grid; grid-template-columns: 1.5fr 1fr;
-            gap: 12px; margin-top: 2vh;
-        }
+        .profile-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 12px; margin-top: 2vh; }
         .card {
             background: rgba(255,255,255,0.2);
             -webkit-backdrop-filter: blur(15px);
             backdrop-filter: blur(15px);
-            border-radius: 20px; padding: 28px;
-            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px; padding: 28px; border: 1px solid rgba(255,255,255,0.1);
         }
         .bento-main { grid-row: span 3; background: var(--text) !important; color: var(--bg-start); }
         .bento-title { font-size: clamp(2.8rem, 4vw, 5rem); font-weight: 900; }
@@ -93,10 +76,7 @@
         /* 03 Selected Work */
         .work-section { color: var(--text); }
         .work-label { display: block; margin-bottom: 8px; }
-        .work-header {
-            display: flex; justify-content: space-between; align-items: flex-end;
-            margin-bottom: 2.5vh;
-        }
+        .work-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5vh; }
         .work-title { font-size: clamp(3rem, 5.5vw, 7rem); font-weight: 900; letter-spacing: -0.02em; }
         .work-count { font-size: 0.8rem; opacity: 0.6; margin-bottom: 8px; }
         .project-list { border-top: 1px solid var(--divider); }
@@ -105,7 +85,7 @@
             padding: 1.8vh 0; border-bottom: 1px solid var(--divider);
             transition: 0.4s ease; cursor: pointer;
         }
-        .project-item:hover { opacity: 0.5; }
+        .project-item:hover { opacity: 0.4; }
         .p-num { font-size: 0.8rem; opacity: 0.5; }
         .p-name { font-size: clamp(1.4rem, 2.2vw, 2.8rem); font-weight: 900; }
 
@@ -122,17 +102,15 @@
         .time-year { font-size: 0.8rem; opacity: 0.5; margin-bottom: 4px; display: block; }
         .time-title { font-size: 1.1rem; font-weight: 900; }
         .career-cards { display: flex; flex-direction: column; gap: 1.5vh; }
-        .career-card {
-            border-radius: 24px; padding: 28px 32px; display: flex; flex-direction: column;
-        }
+        .career-card { border-radius: 24px; padding: 28px 32px; display: flex; flex-direction: column; }
         .card-white {
-            background: rgba(255,255,255,0.85); color: #000000;
+            background: rgba(255,255,255,0.85); color: #000;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
         }
         .card-black {
-            background: rgba(0,0,0,0.85); color: #ffffff;
+            background: rgba(0,0,0,0.85); color: #fff;
             -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
         }
@@ -142,24 +120,14 @@
         .card-footer { font-size: 0.8rem; opacity: 0.6; }
 
         /* Transition Button */
-        .mode-btn {
-            cursor: pointer; border: 1px solid var(--text);
-            padding: 5px 15px; border-radius: 30px; font-size: 0.6rem; transition: 0.3s;
-        }
+        .mode-btn { cursor: pointer; border: 1px solid var(--text); padding: 5px 15px; border-radius: 30px; font-size: 0.6rem; transition: 0.3s; }
         .mode-btn:hover { background: var(--text); color: var(--bg-start); }
 
         /* 05 Contact */
         #contact-section { align-items: stretch; }
-        .contact-grid {
-            display: grid; grid-template-columns: 1fr 1fr;
-            align-items: center; width: 100%; gap: 40px; flex: 1;
-        }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: center; width: 100%; gap: 40px; flex: 1; }
         .btn-group { margin-top: 4vh; display: flex; gap: 15px; }
-        .btn {
-            padding: 16px 30px; border-radius: 50px;
-            border: 1px solid var(--text); text-decoration: none;
-            color: var(--text); font-weight: 700;
-        }
+        .btn { padding: 16px 30px; border-radius: 50px; border: 1px solid var(--text); text-decoration: none; color: var(--text); font-weight: 700; }
         .btn-black { background: var(--text); color: var(--bg-start); }
         .contact-3d { height: 58vh; position: relative; }
         #contact-canvas { width: 100%; height: 100%; display: block; }
@@ -267,275 +235,327 @@
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        // =========================================
-        // 01 Background TorusKnot (scroll zoom)
-        // =========================================
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        // =============================================
+        // 01 Background — Scrolling TorusKnot
+        // =============================================
+        const scene  = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setSize(innerWidth, innerHeight);
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        const geometry = new THREE.TorusKnotGeometry(2.5, 0.7, 180, 24);
+        const bgGeo = new THREE.TorusKnotGeometry(2.5, 0.7, 180, 24);
         const material = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true, transparent: true, opacity: 0.12 });
-        const mainObj = new THREE.Mesh(geometry, material);
-        scene.add(mainObj);
+        scene.add(new THREE.Mesh(bgGeo, material));
 
         const starsGeo = new THREE.BufferGeometry();
-        const starsCount = 3000;
-        const posArray = new Float32Array(starsCount * 3);
-        for(let i = 0; i < starsCount * 3; i++) posArray[i] = (Math.random() - 0.5) * 40;
-        starsGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const sPos = new Float32Array(3000 * 3);
+        for(let i = 0; i < sPos.length; i++) sPos[i] = (Math.random() - 0.5) * 40;
+        starsGeo.setAttribute('position', new THREE.BufferAttribute(sPos, 3));
         const starsMat = new THREE.PointsMaterial({ size: 0.015, color: 0x000000, transparent: true, opacity: 0.25 });
         const starsMesh = new THREE.Points(starsGeo, starsMat);
         scene.add(starsMesh);
 
         camera.position.z = 10;
+        const bgObj = scene.children[0];
 
-        function animate() {
-            requestAnimationFrame(animate);
-            mainObj.rotation.y += 0.003;
-            mainObj.rotation.x += 0.001;
+        (function animateBg() {
+            requestAnimationFrame(animateBg);
+            bgObj.rotation.y += 0.003;
+            bgObj.rotation.x += 0.001;
             starsMesh.rotation.y += 0.0003;
             renderer.render(scene, camera);
-        }
-        animate();
+        })();
 
         gsap.to(camera.position, {
             z: -15,
-            scrollTrigger: { trigger: ".content", start: "top top", end: "bottom bottom", scrub: 2 }
+            scrollTrigger: { trigger: '.content', start: 'top top', end: 'bottom bottom', scrub: 2 }
         });
 
-        // =========================================
-        // 03 Work Section — Wave Particle Grid
-        // =========================================
+        // =============================================
+        // 03 Work — Particle Vortex (渦巻き吸い込み)
+        // =============================================
         const workCanvas = document.getElementById('work-canvas');
-        const wScene = new THREE.Scene();
-        const wCamera = new THREE.PerspectiveCamera(72, 1, 0.1, 1000);
+        const wScene  = new THREE.Scene();
+        const wCamera = new THREE.PerspectiveCamera(65, 1, 0.1, 1000);
         const wRenderer = new THREE.WebGLRenderer({ canvas: workCanvas, antialias: false, alpha: true });
-        wRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        wRenderer.setPixelRatio(Math.min(devicePixelRatio, 1.5));
 
-        function resizeWorkCanvas() {
+        function resizeWork() {
             const w = workCanvas.clientWidth, h = workCanvas.clientHeight;
             wCamera.aspect = w / h;
             wCamera.updateProjectionMatrix();
             wRenderer.setSize(w, h, false);
         }
-        resizeWorkCanvas();
+        resizeWork();
 
-        const wCols = 22, wRows = 22, wCount = wCols * wRows;
-        const wGeo = new THREE.BufferGeometry();
-        const wPos = new Float32Array(wCount * 3);
-        const wBX = [], wBZ = [];
+        const vCount = 3200;
+        const vGeo   = new THREE.BufferGeometry();
+        const vPos   = new Float32Array(vCount * 3);
+        const vState = [];
 
-        for(let i = 0; i < wCols; i++) {
-            for(let j = 0; j < wRows; j++) {
-                const idx = i * wRows + j;
-                const x = (i - wCols / 2) * 1.4;
-                const z = (j - wRows / 2) * 1.4;
-                wPos[idx * 3] = x;
-                wPos[idx * 3 + 1] = 0;
-                wPos[idx * 3 + 2] = z;
-                wBX.push(x);
-                wBZ.push(z);
-            }
+        for(let i = 0; i < vCount; i++) {
+            const r     = 0.3 + Math.random() * 9.5;
+            const angle = Math.random() * Math.PI * 2;
+            const h     = (Math.random() - 0.5) * 1.4 * (r / 10);
+            vState.push({ r, angle, h,
+                orbit:   0.003 + 0.014 * Math.pow(1 - r / 10, 1.5),
+                inward:  0.004 + Math.random() * 0.004
+            });
+            vPos[i*3]   = Math.cos(angle) * r;
+            vPos[i*3+1] = h;
+            vPos[i*3+2] = Math.sin(angle) * r;
         }
 
-        wGeo.setAttribute('position', new THREE.BufferAttribute(wPos, 3));
-        const wMat = new THREE.PointsMaterial({ size: 0.07, color: 0x000000, transparent: true, opacity: 0.22 });
-        const wPoints = new THREE.Points(wGeo, wMat);
-        wScene.add(wPoints);
-        wCamera.position.set(0, 13, 7);
+        vGeo.setAttribute('position', new THREE.BufferAttribute(vPos, 3));
+        const vortexMat = new THREE.PointsMaterial({ size: 0.055, color: 0x000000, transparent: true, opacity: 0.55 });
+        wScene.add(new THREE.Points(vGeo, vortexMat));
+
+        wCamera.position.set(0, 10, 4.5);
         wCamera.lookAt(0, 0, 0);
 
-        let wTime = 0;
-        function animateWork() {
+        (function animateWork() {
             requestAnimationFrame(animateWork);
-            wTime += 0.014;
-            const pos = wPoints.geometry.attributes.position.array;
-            for(let i = 0; i < wCount; i++) {
-                pos[i * 3 + 1] = Math.sin(wBX[i] * 0.5 + wTime) * Math.cos(wBZ[i] * 0.5 + wTime * 0.7) * 0.9;
+            const p = vGeo.attributes.position.array;
+            for(let i = 0; i < vCount; i++) {
+                const s = vState[i];
+                s.angle += s.orbit;
+                s.r     -= s.inward * 0.016;
+                if(s.r < 0.15) {
+                    s.r     = 4.5 + Math.random() * 5;
+                    s.angle = Math.random() * Math.PI * 2;
+                    s.h     = (Math.random() - 0.5) * 1.4 * (s.r / 10);
+                }
+                p[i*3]   = Math.cos(s.angle) * s.r;
+                p[i*3+1] = s.h;
+                p[i*3+2] = Math.sin(s.angle) * s.r;
             }
-            wPoints.geometry.attributes.position.needsUpdate = true;
+            vGeo.attributes.position.needsUpdate = true;
             wRenderer.render(wScene, wCamera);
-        }
-        animateWork();
+        })();
 
-        // =========================================
-        // 04 Career Section — Constellation Network
-        // =========================================
+        // =============================================
+        // 04 Career — DNA Double Helix
+        // =============================================
         const careerCanvas = document.getElementById('career-canvas');
-        const caScene = new THREE.Scene();
-        const caCamera = new THREE.PerspectiveCamera(55, 1, 0.1, 1000);
+        const caScene  = new THREE.Scene();
+        const caCamera = new THREE.PerspectiveCamera(52, 1, 0.1, 1000);
         const caRenderer = new THREE.WebGLRenderer({ canvas: careerCanvas, antialias: true, alpha: true });
-        caRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        caRenderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
-        function resizeCareerCanvas() {
+        function resizeCareer() {
             const w = careerCanvas.clientWidth, h = careerCanvas.clientHeight;
             caCamera.aspect = w / h;
             caCamera.updateProjectionMatrix();
             caRenderer.setSize(w, h, false);
         }
-        resizeCareerCanvas();
+        resizeCareer();
 
         const caGroup = new THREE.Group();
         caScene.add(caGroup);
 
-        const caNodeCount = 16;
-        const caNodes = [];
-        const caNodeMat = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.4 });
-        const caNodeGeo = new THREE.SphereGeometry(0.07, 8, 8);
-        const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+        // Build helix point arrays
+        const TURNS = 4, SPT = 50, TOTAL = TURNS * SPT;
+        const DNA_R = 2.1, DNA_H = 7.5;
+        const pts1 = [], pts2 = [];
 
-        for(let i = 0; i < caNodeCount; i++) {
-            const y = 1 - (i / (caNodeCount - 1)) * 2;
-            const r = Math.sqrt(1 - y * y);
-            const theta = goldenAngle * i;
-            const s = 3.2;
-            const n = { x: r * Math.cos(theta) * s, y: y * s, z: r * Math.sin(theta) * s };
-            caNodes.push(n);
-            const mesh = new THREE.Mesh(caNodeGeo, caNodeMat);
-            mesh.position.set(n.x, n.y, n.z);
-            caGroup.add(mesh);
+        for(let i = 0; i <= TOTAL; i++) {
+            const t     = i / TOTAL;
+            const angle = t * TURNS * Math.PI * 2;
+            const y     = (t - 0.5) * DNA_H;
+            pts1.push(new THREE.Vector3( Math.cos(angle) * DNA_R, y,  Math.sin(angle) * DNA_R));
+            pts2.push(new THREE.Vector3(-Math.cos(angle) * DNA_R, y, -Math.sin(angle) * DNA_R));
         }
 
-        const caEdgeVerts = [];
-        for(let i = 0; i < caNodeCount; i++) {
-            for(let j = i + 1; j < caNodeCount; j++) {
-                const dx = caNodes[i].x - caNodes[j].x;
-                const dy = caNodes[i].y - caNodes[j].y;
-                const dz = caNodes[i].z - caNodes[j].z;
-                if(Math.sqrt(dx*dx + dy*dy + dz*dz) < 3.6) {
-                    caEdgeVerts.push(caNodes[i].x, caNodes[i].y, caNodes[i].z,
-                                     caNodes[j].x, caNodes[j].y, caNodes[j].z);
-                }
-            }
+        // Two strand tubes
+        const dnaStrandMat = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.48 });
+        [pts1, pts2].forEach(pts => {
+            const curve = new THREE.CatmullRomCurve3(pts);
+            caGroup.add(new THREE.Mesh(
+                new THREE.TubeGeometry(curve, TOTAL, 0.065, 7, false),
+                dnaStrandMat
+            ));
+        });
+
+        // Rungs (LineSegments — single draw call)
+        const RUNG_STEP = 5;
+        const rungVerts = [];
+        const nodePositions = [];
+        for(let i = 0; i <= TOTAL; i += RUNG_STEP) {
+            const p1 = pts1[Math.min(i, pts1.length - 1)];
+            const p2 = pts2[Math.min(i, pts2.length - 1)];
+            rungVerts.push(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
+            nodePositions.push(p1, p2);
         }
+        const dnaRungGeo = new THREE.BufferGeometry();
+        dnaRungGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(rungVerts), 3));
+        const dnaRungMat = new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.28 });
+        caGroup.add(new THREE.LineSegments(dnaRungGeo, dnaRungMat));
 
-        const caEdgeGeo = new THREE.BufferGeometry();
-        caEdgeGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(caEdgeVerts), 3));
-        const caEdgeMat = new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.13 });
-        caGroup.add(new THREE.LineSegments(caEdgeGeo, caEdgeMat));
-        caCamera.position.z = 9;
+        // Node spheres (InstancedMesh — single draw call)
+        const dnaNodeMat  = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.72 });
+        const dnaNodeInst = new THREE.InstancedMesh(
+            new THREE.SphereGeometry(0.13, 8, 8),
+            dnaNodeMat,
+            nodePositions.length
+        );
+        const _dummy = new THREE.Object3D();
+        nodePositions.forEach((p, idx) => {
+            _dummy.position.copy(p);
+            _dummy.updateMatrix();
+            dnaNodeInst.setMatrixAt(idx, _dummy.matrix);
+        });
+        dnaNodeInst.instanceMatrix.needsUpdate = true;
+        caGroup.add(dnaNodeInst);
 
-        function animateCareer() {
+        caCamera.position.z = 11;
+        let dnaT = 0;
+
+        (function animateCareer() {
             requestAnimationFrame(animateCareer);
-            caGroup.rotation.y += 0.0025;
-            caGroup.rotation.x += 0.0007;
+            dnaT += 0.01;
+            caGroup.rotation.y += 0.005;
+            // Gentle breathing pulse
+            const s = 1 + Math.sin(dnaT * 0.45) * 0.025;
+            caGroup.scale.set(s, s, s);
             caRenderer.render(caScene, caCamera);
-        }
-        animateCareer();
+        })();
 
-        // =========================================
-        // 05 Contact — Metallic TorusKnot + Orbiting Particles
-        // =========================================
+        // =============================================
+        // 05 Contact — Metallic Torus + Nebula Storm
+        // =============================================
         const contactCanvas = document.getElementById('contact-canvas');
-        const cScene = new THREE.Scene();
+        const cScene  = new THREE.Scene();
         const cCamera = new THREE.PerspectiveCamera(55, 1, 0.1, 1000);
         const cRenderer = new THREE.WebGLRenderer({ canvas: contactCanvas, antialias: true, alpha: true });
-        cRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        cRenderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
-        function resizeContactCanvas() {
+        function resizeContact() {
             const w = contactCanvas.clientWidth, h = contactCanvas.clientHeight;
             cCamera.aspect = w / h;
             cCamera.updateProjectionMatrix();
             cRenderer.setSize(w, h, false);
         }
-        resizeContactCanvas();
+        resizeContact();
 
+        // Lighting
         cScene.add(new THREE.AmbientLight(0xffffff, 0.4));
-        const cLight1 = new THREE.DirectionalLight(0xffffff, 3);
-        cLight1.position.set(6, 6, 6);
-        cScene.add(cLight1);
-        const cLight2 = new THREE.PointLight(0x88aaff, 2, 60);
-        cLight2.position.set(-6, 4, 2);
-        cScene.add(cLight2);
-        const cLight3 = new THREE.PointLight(0xffffff, 1.5, 60);
-        cLight3.position.set(3, -4, 5);
-        cScene.add(cLight3);
+        const cL1 = new THREE.DirectionalLight(0xffffff, 3);
+        cL1.position.set(6, 6, 6);
+        cScene.add(cL1);
+        const cL2 = new THREE.PointLight(0x88aaff, 2.5, 60);
+        cL2.position.set(-6, 4, 2);
+        cScene.add(cL2);
+        const cL3 = new THREE.PointLight(0xffffff, 1.5, 60);
+        cL3.position.set(3, -4, 5);
+        cScene.add(cL3);
 
-        const cGeo = new THREE.TorusKnotGeometry(2.8, 0.72, 300, 36);
-        const cMatSolid = new THREE.MeshStandardMaterial({ color: 0x777777, metalness: 0.95, roughness: 0.1 });
-        const cObjSolid = new THREE.Mesh(cGeo, cMatSolid);
-        cObjSolid.scale.set(2, 2, 2);
-        cScene.add(cObjSolid);
+        // Metallic TorusKnot
+        const cGeo     = new THREE.TorusKnotGeometry(2.8, 0.72, 300, 36);
+        const cSolidMat = new THREE.MeshStandardMaterial({ color: 0x777777, metalness: 0.95, roughness: 0.1 });
+        const cWireMat  = new THREE.MeshBasicMaterial({ color: 0xcccccc, wireframe: true, transparent: true, opacity: 0.2 });
 
-        const cMatWire = new THREE.MeshBasicMaterial({ color: 0xcccccc, wireframe: true, transparent: true, opacity: 0.22 });
-        const cObjWire = new THREE.Mesh(cGeo, cMatWire);
-        cObjWire.scale.set(2, 2, 2);
-        cScene.add(cObjWire);
+        const cSolid = new THREE.Mesh(cGeo, cSolidMat);
+        const cWire  = new THREE.Mesh(cGeo, cWireMat);
+        cSolid.scale.set(2, 2, 2);
+        cWire.scale.set(2, 2, 2);
+        cScene.add(cSolid, cWire);
 
-        const orbitRings = [
-            { count: 24, radius: 7.5, speed: 0.006, tilt: 0.3 },
-            { count: 18, radius: 8.8, speed: -0.004, tilt: 1.1 },
-            { count: 14, radius: 10.0, speed: 0.003, tilt: 2.0 },
+        // 5 dramatic orbit rings
+        const ORBIT_RINGS = [
+            { count: 48, r: 7.8,  speed:  0.010, tilt: 0.15 },
+            { count: 40, r: 9.4,  speed: -0.007, tilt: 1.28 },
+            { count: 32, r: 11.0, speed:  0.005, tilt: 2.18 },
+            { count: 24, r: 12.6, speed: -0.003, tilt: 0.82 },
+            { count: 18, r: 14.2, speed:  0.008, tilt: 1.65 },
         ];
 
-        const orbitParticles = orbitRings.map(ring => {
-            const geo = new THREE.BufferGeometry();
-            const pos = new Float32Array(ring.count * 3);
+        const orbitSystems = ORBIT_RINGS.map(ring => {
+            const geo    = new THREE.BufferGeometry();
+            const pos    = new Float32Array(ring.count * 3);
             const phases = Array.from({ length: ring.count }, (_, i) => (i / ring.count) * Math.PI * 2);
             geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-            const mat = new THREE.PointsMaterial({ size: 0.12, color: 0x999999, transparent: true, opacity: 0.55 });
+            const mat  = new THREE.PointsMaterial({ size: 0.13, color: 0xaaaaaa, transparent: true, opacity: 0.6 });
             cScene.add(new THREE.Points(geo, mat));
             return { geo, phases, ...ring };
         });
 
-        cCamera.position.z = 16;
+        // Nebula cloud — 900 particles distributed around the torus
+        const NEBULA_COUNT = 900;
+        const nebulaGeo = new THREE.BufferGeometry();
+        const nebulaPos = new Float32Array(NEBULA_COUNT * 3);
+        for(let i = 0; i < NEBULA_COUNT; i++) {
+            const phi   = Math.acos(2 * Math.random() - 1);
+            const theta = Math.random() * Math.PI * 2;
+            const r     = 7 + Math.pow(Math.random(), 1.8) * 10;
+            nebulaPos[i*3]   = r * Math.sin(phi) * Math.cos(theta);
+            nebulaPos[i*3+1] = r * Math.sin(phi) * Math.sin(theta) * 0.5;
+            nebulaPos[i*3+2] = r * Math.cos(phi);
+        }
+        nebulaGeo.setAttribute('position', new THREE.BufferAttribute(nebulaPos, 3));
+        const nebulaMat = new THREE.PointsMaterial({ size: 0.09, color: 0x999999, transparent: true, opacity: 0.28 });
+        const nebulaCloud = new THREE.Points(nebulaGeo, nebulaMat);
+        cScene.add(nebulaCloud);
 
-        let cTime = 0;
-        function animateContact() {
+        cCamera.position.z = 16;
+        let cT = 0;
+
+        (function animateContact() {
             requestAnimationFrame(animateContact);
-            cTime += 0.01;
-            cObjSolid.rotation.y += 0.004;
-            cObjSolid.rotation.x += 0.0012;
-            cObjWire.rotation.copy(cObjSolid.rotation);
-            orbitParticles.forEach(ring => {
-                const pos = ring.geo.attributes.position.array;
+            cT += 0.01;
+
+            cSolid.rotation.y += 0.004;
+            cSolid.rotation.x += 0.0012;
+            cWire.rotation.copy(cSolid.rotation);
+
+            // Update orbit rings
+            orbitSystems.forEach(ring => {
+                const p = ring.geo.attributes.position.array;
                 for(let i = 0; i < ring.count; i++) {
-                    const angle = ring.phases[i] + cTime * ring.speed * 60;
-                    pos[i * 3]     = ring.radius * Math.cos(angle);
-                    pos[i * 3 + 1] = ring.radius * Math.sin(angle) * Math.sin(ring.tilt);
-                    pos[i * 3 + 2] = ring.radius * Math.sin(angle) * Math.cos(ring.tilt);
+                    const a = ring.phases[i] + cT * ring.speed * 60;
+                    p[i*3]   = ring.r * Math.cos(a);
+                    p[i*3+1] = ring.r * Math.sin(a) * Math.sin(ring.tilt);
+                    p[i*3+2] = ring.r * Math.sin(a) * Math.cos(ring.tilt);
                 }
                 ring.geo.attributes.position.needsUpdate = true;
             });
-            cRenderer.render(cScene, cCamera);
-        }
-        animateContact();
 
-        // =========================================
-        // Dark/Light Mode Toggle
-        // =========================================
+            nebulaCloud.rotation.y += 0.0005;
+            nebulaCloud.rotation.x += 0.00018;
+            cRenderer.render(cScene, cCamera);
+        })();
+
+        // =============================================
+        // Dark / Light Mode Toggle
+        // =============================================
         function toggleMode() {
             const isDark = document.body.classList.toggle('dark-mode');
             const c = isDark ? 1 : 0;
-            gsap.to(material.color, { r: c, g: c, b: c, duration: 0.8 });
-            gsap.to(starsMat.color, { r: c, g: c, b: c, duration: 0.8 });
-            gsap.to(wMat.color, { r: c, g: c, b: c, duration: 0.8 });
-            gsap.to(caNodeMat.color, { r: c, g: c, b: c, duration: 0.8 });
-            gsap.to(caEdgeMat.color, { r: c, g: c, b: c, duration: 0.8 });
+            gsap.to(material.color,    { r: c, g: c, b: c, duration: 0.8 });
+            gsap.to(starsMat.color,    { r: c, g: c, b: c, duration: 0.8 });
+            gsap.to(vortexMat.color,   { r: c, g: c, b: c, duration: 0.8 });
+            gsap.to(dnaStrandMat.color,{ r: c, g: c, b: c, duration: 0.8 });
+            gsap.to(dnaRungMat.color,  { r: c, g: c, b: c, duration: 0.8 });
+            gsap.to(dnaNodeMat.color,  { r: c, g: c, b: c, duration: 0.8 });
         }
 
-        // Live clock (JST = UTC+9)
+        // Live clock JST
         function updateClock() {
-            const now = new Date();
-            const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
-            const h = String(jst.getUTCHours()).padStart(2, '0');
-            const m = String(jst.getUTCMinutes()).padStart(2, '0');
-            const s = String(jst.getUTCSeconds()).padStart(2, '0');
-            document.getElementById('clock').textContent = `● ${h}:${m}:${s} JST`;
+            const jst = new Date(Date.now() + 9 * 3600000);
+            const pad = n => String(n).padStart(2, '0');
+            document.getElementById('clock').textContent =
+                `● ${pad(jst.getUTCHours())}:${pad(jst.getUTCMinutes())}:${pad(jst.getUTCSeconds())} JST`;
         }
         updateClock();
         setInterval(updateClock, 1000);
 
         window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.aspect = innerWidth / innerHeight;
             camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            resizeWorkCanvas();
-            resizeCareerCanvas();
-            resizeContactCanvas();
+            renderer.setSize(innerWidth, innerHeight);
+            resizeWork();
+            resizeCareer();
+            resizeContact();
         });
     </script>
 </body>
