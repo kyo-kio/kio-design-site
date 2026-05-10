@@ -13,14 +13,14 @@
             --bg-start: #f0ede5;
             --bg-end: #e2dfd5;
             --text: #0a0a0a;
-            --dark-section-bg: rgba(10, 10, 10, 0.95);
-            --dark-section-text: #f0ede5;
+            --divider: rgba(0, 0, 0, 0.12);
         }
 
         body.dark-mode {
             --bg-start: #0a0a0a;
             --bg-end: #1a1a1a;
             --text: #f0ede5;
+            --divider: rgba(255, 255, 255, 0.12);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -72,25 +72,23 @@
         .card {
             background: rgba(255,255,255,0.2); backdrop-filter: blur(15px);
             border-radius: 20px; padding: 28px;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid var(--divider);
         }
         .bento-main { grid-row: span 3; background: var(--text) !important; color: var(--bg-start); }
         .card h3 { font-size: 1.35rem; margin-top: 10px; font-weight: 900; }
 
         /* 03 Selected Work */
-        .work-section {
-            background-color: var(--dark-section-bg); color: var(--dark-section-text);
-        }
+        .work-section { color: var(--text); }
         .work-header {
             display: flex; justify-content: space-between; align-items: flex-end;
             margin-bottom: 2.5vh;
         }
         .work-title { font-size: clamp(3rem, 5.5vw, 7rem); font-weight: 900; letter-spacing: -0.02em; }
         .work-count { font-size: 0.8rem; opacity: 0.6; margin-bottom: 8px; }
-        .project-list { border-top: 1px solid rgba(255,255,255,0.1); }
+        .project-list { border-top: 1px solid var(--divider); }
         .project-item {
             display: grid; grid-template-columns: 40px 1.5fr 1fr 0.8fr 0.5fr; align-items: center;
-            padding: 1.8vh 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 1.8vh 0; border-bottom: 1px solid var(--divider);
             transition: 0.4s ease; cursor: pointer;
         }
         .project-item:hover { opacity: 0.5; }
@@ -100,7 +98,7 @@
         /* 04 Career */
         .career-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start; }
         .timeline { position: relative; padding-left: 20px; border-left: 1px solid rgba(0,0,0,0.1); }
-        .dark-mode .timeline { border-left-color: rgba(255,255,255,0.1); }
+        .dark-mode .timeline { border-left-color: var(--divider); }
         .timeline-node { position: relative; padding-bottom: 2.5vh; }
         .timeline-node::before {
             content: ''; position: absolute; left: -24px; top: 5px;
