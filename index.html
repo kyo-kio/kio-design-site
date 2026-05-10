@@ -335,11 +335,11 @@
         })();
 
         // =============================================
-        // 04 Career — DNA Double Helix
+        // 04 Career — Neural Network (Synaptic Web)
         // =============================================
         const careerCanvas = document.getElementById('career-canvas');
         const caScene  = new THREE.Scene();
-        const caCamera = new THREE.PerspectiveCamera(52, 1, 0.1, 1000);
+        const caCamera = new THREE.PerspectiveCamera(60, 1, 0.1, 1000);
         const caRenderer = new THREE.WebGLRenderer({ canvas: careerCanvas, antialias: true, alpha: true });
         caRenderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
@@ -354,70 +354,117 @@
         const caGroup = new THREE.Group();
         caScene.add(caGroup);
 
-        // Build helix point arrays
-        const TURNS = 4, SPT = 50, TOTAL = TURNS * SPT;
-        const DNA_R = 2.1, DNA_H = 7.5;
-        const pts1 = [], pts2 = [];
+        const NODE_COUNT   = 72;
+        const CONNECT_DIST = 3.6;
+        const BOUNDS = { x: 7.5, y: 5, z: 3.5 };
 
-        for(let i = 0; i <= TOTAL; i++) {
-            const t     = i / TOTAL;
-            const angle = t * TURNS * Math.PI * 2;
-            const y     = (t - 0.5) * DNA_H;
-            pts1.push(new THREE.Vector3( Math.cos(angle) * DNA_R, y,  Math.sin(angle) * DNA_R));
-            pts2.push(new THREE.Vector3(-Math.cos(angle) * DNA_R, y, -Math.sin(angle) * DNA_R));
+        const caNodes = [];
+        for(let i = 0; i < NODE_COUNT; i++) {
+            caNodes.push({
+                x:  (Math.random()-0.5)*BOUNDS.x*2,
+                y:  (Math.random()-0.5)*BOUNDS.y*2,
+                z:  (Math.random()-0.5)*BOUNDS.z*2,
+                vx: (Math.random()-0.5)*0.007,
+                vy: (Math.random()-0.5)*0.006,
+                vz: (Math.random()-0.5)*0.004,
+                phase: Math.random()*Math.PI*2,
+            });
         }
 
-        // Two strand tubes
-        const dnaStrandMat = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.48 });
-        [pts1, pts2].forEach(pts => {
-            const curve = new THREE.CatmullRomCurve3(pts);
-            caGroup.add(new THREE.Mesh(
-                new THREE.TubeGeometry(curve, TOTAL, 0.065, 7, false),
-                dnaStrandMat
-            ));
-        });
+        // Node spheres — InstancedMesh (single draw call)
+        const caNodeMat  = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.88 });
+        const caNodeInst = new THREE.InstancedMesh(new THREE.SphereGeometry(0.11, 8, 8), caNodeMat, NODE_COUNT);
+        caGroup.add(caNodeInst);
 
-        // Rungs (LineSegments — single draw call)
-        const RUNG_STEP = 5;
-        const rungVerts = [];
-        const nodePositions = [];
-        for(let i = 0; i <= TOTAL; i += RUNG_STEP) {
-            const p1 = pts1[Math.min(i, pts1.length - 1)];
-            const p2 = pts2[Math.min(i, pts2.length - 1)];
-            rungVerts.push(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
-            nodePositions.push(p1, p2);
-        }
-        const dnaRungGeo = new THREE.BufferGeometry();
-        dnaRungGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(rungVerts), 3));
-        const dnaRungMat = new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.28 });
-        caGroup.add(new THREE.LineSegments(dnaRungGeo, dnaRungMat));
+        // Connection lines — dynamic BufferGeometry
+        const MAX_LINES = 450;
+        const caLineGeo = new THREE.BufferGeometry();
+        const caLineArr = new Float32Array(MAX_LINES * 6);
+        caLineGeo.setAttribute('position', new THREE.BufferAttribute(caLineArr, 3));
+        const caLineMat  = new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.16 });
+        const caLineSegs = new THREE.LineSegments(caLineGeo, caLineMat);
+        caGroup.add(caLineSegs);
 
-        // Node spheres (InstancedMesh — single draw call)
-        const dnaNodeMat  = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.72 });
-        const dnaNodeInst = new THREE.InstancedMesh(
-            new THREE.SphereGeometry(0.13, 8, 8),
-            dnaNodeMat,
-            nodePositions.length
-        );
-        const _dummy = new THREE.Object3D();
-        nodePositions.forEach((p, idx) => {
-            _dummy.position.copy(p);
-            _dummy.updateMatrix();
-            dnaNodeInst.setMatrixAt(idx, _dummy.matrix);
-        });
-        dnaNodeInst.instanceMatrix.needsUpdate = true;
-        caGroup.add(dnaNodeInst);
+        // Signal pulses traveling along connections
+        const PULSE_COUNT = 22;
+        const caPulseMat  = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 1 });
+        const caPulseInst = new THREE.InstancedMesh(new THREE.SphereGeometry(0.068, 6, 6), caPulseMat, PULSE_COUNT);
+        caGroup.add(caPulseInst);
+        const caPulses = Array.from({length: PULSE_COUNT}, () => ({
+            from:  Math.floor(Math.random()*NODE_COUNT),
+            to:    Math.floor(Math.random()*NODE_COUNT),
+            t:     Math.random(),
+            speed: 0.009 + Math.random()*0.011,
+        }));
 
-        caCamera.position.z = 11;
-        let dnaT = 0;
+        caCamera.position.z = 14;
+        const _caObj = new THREE.Object3D();
+        let caT = 0;
 
         (function animateCareer() {
             requestAnimationFrame(animateCareer);
-            dnaT += 0.01;
-            caGroup.rotation.y += 0.005;
-            // Gentle breathing pulse
-            const s = 1 + Math.sin(dnaT * 0.45) * 0.025;
-            caGroup.scale.set(s, s, s);
+            caT += 0.01;
+            caGroup.rotation.y += 0.0028;
+
+            // Drift nodes
+            caNodes.forEach(n => {
+                n.x += n.vx; n.y += n.vy; n.z += n.vz;
+                if(Math.abs(n.x) > BOUNDS.x) n.vx *= -1;
+                if(Math.abs(n.y) > BOUNDS.y) n.vy *= -1;
+                if(Math.abs(n.z) > BOUNDS.z) n.vz *= -1;
+            });
+
+            // Update node instances (with pulsing scale)
+            caNodes.forEach((n, i) => {
+                const ps = 1 + Math.sin(caT * 1.8 + n.phase) * 0.18;
+                _caObj.position.set(n.x, n.y, n.z);
+                _caObj.scale.setScalar(ps);
+                _caObj.updateMatrix();
+                caNodeInst.setMatrixAt(i, _caObj.matrix);
+            });
+            caNodeInst.instanceMatrix.needsUpdate = true;
+
+            // Build connection lines between nearby nodes
+            let lineIdx = 0;
+            for(let i = 0; i < NODE_COUNT && lineIdx < MAX_LINES; i++) {
+                for(let j = i+1; j < NODE_COUNT && lineIdx < MAX_LINES; j++) {
+                    const ni = caNodes[i], nj = caNodes[j];
+                    const dx = ni.x-nj.x, dy = ni.y-nj.y, dz = ni.z-nj.z;
+                    if(dx*dx+dy*dy+dz*dz < CONNECT_DIST*CONNECT_DIST) {
+                        caLineArr[lineIdx*6]   = ni.x; caLineArr[lineIdx*6+1] = ni.y; caLineArr[lineIdx*6+2] = ni.z;
+                        caLineArr[lineIdx*6+3] = nj.x; caLineArr[lineIdx*6+4] = nj.y; caLineArr[lineIdx*6+5] = nj.z;
+                        lineIdx++;
+                    }
+                }
+            }
+            for(let i = lineIdx; i < MAX_LINES; i++) {
+                caLineArr[i*6]=caLineArr[i*6+1]=caLineArr[i*6+2]=0;
+                caLineArr[i*6+3]=caLineArr[i*6+4]=caLineArr[i*6+5]=0;
+            }
+            caLineGeo.attributes.position.needsUpdate = true;
+            caLineGeo.setDrawRange(0, lineIdx * 2);
+
+            // Animate pulse signals
+            caPulses.forEach((pulse, i) => {
+                pulse.t += pulse.speed;
+                if(pulse.t >= 1) {
+                    pulse.from = pulse.to;
+                    pulse.to   = Math.floor(Math.random()*NODE_COUNT);
+                    pulse.t    = 0;
+                    pulse.speed = 0.009 + Math.random()*0.011;
+                }
+                const fn = caNodes[pulse.from], tn = caNodes[pulse.to];
+                _caObj.position.set(
+                    fn.x + (tn.x-fn.x)*pulse.t,
+                    fn.y + (tn.y-fn.y)*pulse.t,
+                    fn.z + (tn.z-fn.z)*pulse.t
+                );
+                _caObj.scale.setScalar(1);
+                _caObj.updateMatrix();
+                caPulseInst.setMatrixAt(i, _caObj.matrix);
+            });
+            caPulseInst.instanceMatrix.needsUpdate = true;
+
             caRenderer.render(caScene, caCamera);
         })();
 
@@ -533,10 +580,10 @@
             const c = isDark ? 1 : 0;
             gsap.to(material.color,    { r: c, g: c, b: c, duration: 0.8 });
             gsap.to(starsMat.color,    { r: c, g: c, b: c, duration: 0.8 });
-            gsap.to(vortexMat.color,   { r: c, g: c, b: c, duration: 0.8 });
-            gsap.to(dnaStrandMat.color,{ r: c, g: c, b: c, duration: 0.8 });
-            gsap.to(dnaRungMat.color,  { r: c, g: c, b: c, duration: 0.8 });
-            gsap.to(dnaNodeMat.color,  { r: c, g: c, b: c, duration: 0.8 });
+            gsap.to(vortexMat.color,  { r: c, g: c, b: c, duration: 0.8 });
+            gsap.to(caNodeMat.color,  { r: c, g: c, b: c, duration: 0.8 });
+            gsap.to(caLineMat.color,  { r: c, g: c, b: c, duration: 0.8 });
+            gsap.to(caPulseMat.color, { r: c, g: c, b: c, duration: 0.8 });
         }
 
         // Live clock JST
