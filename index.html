@@ -108,6 +108,11 @@
         .btn-group { margin-top: 50px; display: flex; gap: 15px; }
         .btn { padding: 18px 35px; border-radius: 50px; border: 1px solid var(--text); text-decoration: none; color: var(--text); font-weight: 700; }
         .btn-black { background: var(--text); color: var(--bg-start); }
+
+        #contact-section { align-items: stretch; }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: center; width: 100%; gap: 40px; }
+        .contact-3d { height: 70vh; position: relative; }
+        #contact-canvas { width: 100%; height: 100%; display: block; }
     </style>
 </head>
 <body>
@@ -181,10 +186,17 @@
             </div>
         </section>
 
-        <section>
-            <div class="hero-title">Let's make<br>something <i>unusual.</i></div>
-            <div class="btn-group">
-                <a href="mailto:hello@kio-portfolio.com" class="btn btn-black">hello@kio-portfolio.com →</a>
+        <section id="contact-section">
+            <div class="contact-grid">
+                <div>
+                    <div class="hero-title">Let's make<br>something <i>unusual.</i></div>
+                    <div class="btn-group">
+                        <a href="mailto:hello@kio-portfolio.com" class="btn btn-black">hello@kio-portfolio.com →</a>
+                    </div>
+                </div>
+                <div class="contact-3d">
+                    <canvas id="contact-canvas"></canvas>
+                </div>
             </div>
         </section>
     </main>
@@ -253,7 +265,67 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+            resizeContactCanvas();
         });
+
+        // --- Contact Section 3D ---
+        const contactCanvas = document.getElementById('contact-canvas');
+        const cScene = new THREE.Scene();
+        const cCamera = new THREE.PerspectiveCamera(55, 1, 0.1, 1000);
+        const cRenderer = new THREE.WebGLRenderer({ canvas: contactCanvas, antialias: true, alpha: true });
+        cRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        function resizeContactCanvas() {
+            const w = contactCanvas.clientWidth;
+            const h = contactCanvas.clientHeight;
+            cCamera.aspect = w / h;
+            cCamera.updateProjectionMatrix();
+            cRenderer.setSize(w, h, false);
+        }
+        resizeContactCanvas();
+
+        // Lighting
+        cScene.add(new THREE.AmbientLight(0xffffff, 0.4));
+        const cLight1 = new THREE.DirectionalLight(0xffffff, 3);
+        cLight1.position.set(6, 6, 6);
+        cScene.add(cLight1);
+        const cLight2 = new THREE.PointLight(0x88aaff, 2, 60);
+        cLight2.position.set(-6, 4, 2);
+        cScene.add(cLight2);
+        const cLight3 = new THREE.PointLight(0xffffff, 1.5, 60);
+        cLight3.position.set(3, -4, 5);
+        cScene.add(cLight3);
+
+        // Torus Knot — metallic solid + wireframe overlay (like the reference image)
+        const cGeo = new THREE.TorusKnotGeometry(2.8, 0.72, 300, 36);
+
+        const cMatSolid = new THREE.MeshStandardMaterial({
+            color: 0x777777,
+            metalness: 0.95,
+            roughness: 0.1,
+        });
+        const cObjSolid = new THREE.Mesh(cGeo, cMatSolid);
+        cScene.add(cObjSolid);
+
+        const cMatWire = new THREE.MeshBasicMaterial({
+            color: 0xcccccc,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.22,
+        });
+        const cObjWire = new THREE.Mesh(cGeo, cMatWire);
+        cScene.add(cObjWire);
+
+        cCamera.position.z = 9;
+
+        function animateContact() {
+            requestAnimationFrame(animateContact);
+            cObjSolid.rotation.y += 0.004;
+            cObjSolid.rotation.x += 0.0012;
+            cObjWire.rotation.copy(cObjSolid.rotation);
+            cRenderer.render(cScene, cCamera);
+        }
+        animateContact();
     </script>
 </body>
 </html>
