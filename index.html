@@ -39,28 +39,28 @@
             z-index: 0; pointer-events: none;
         }
 
+        /* Nav */
         nav {
             position: fixed; top: 0; width: 100%; padding: 24px 50px;
             display: flex; justify-content: space-between; align-items: center; z-index: 100;
             font-size: 0.8rem; font-weight: bold; letter-spacing: 0.1em;
         }
+        .nav-right { display: flex; align-items: center; gap: 20px; }
+        #clock { font-size: 0.7rem; letter-spacing: 0.2em; }
 
+        /* Section base */
         section {
             height: 100vh; overflow: hidden;
             position: relative; z-index: 1;
             padding: 88px 50px 48px;
             display: flex; flex-direction: column; justify-content: center;
         }
-
-        /* 背景キャンバス共通 */
         .section-canvas {
             position: absolute; top: 0; left: 0;
             width: 100%; height: 100%;
             pointer-events: none; z-index: 0;
         }
-        .section-content {
-            position: relative; z-index: 1; width: 100%;
-        }
+        .section-content { position: relative; z-index: 1; width: 100%; }
 
         /* 01 Hero */
         .hero-title {
@@ -79,15 +79,20 @@
             gap: 12px; margin-top: 2vh;
         }
         .card {
-            background: rgba(255,255,255,0.2); backdrop-filter: blur(15px);
+            background: rgba(255,255,255,0.2);
+            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
             border-radius: 20px; padding: 28px;
             border: 1px solid rgba(255,255,255,0.1);
         }
         .bento-main { grid-row: span 3; background: var(--text) !important; color: var(--bg-start); }
+        .bento-title { font-size: clamp(2.8rem, 4vw, 5rem); font-weight: 900; }
+        .bento-desc { margin-top: 16px; line-height: 1.6; font-size: 0.95rem; }
         .card h3 { font-size: 1.35rem; margin-top: 10px; font-weight: 900; }
 
         /* 03 Selected Work */
         .work-section { color: var(--text); }
+        .work-label { display: block; margin-bottom: 8px; }
         .work-header {
             display: flex; justify-content: space-between; align-items: flex-end;
             margin-bottom: 2.5vh;
@@ -105,6 +110,8 @@
         .p-name { font-size: clamp(1.4rem, 2.2vw, 2.8rem); font-weight: 900; }
 
         /* 04 Career */
+        .section-label { margin-bottom: 16px; display: block; opacity: 0.6; }
+        .career-title { font-size: clamp(2.5rem, 4vw, 4.5rem); font-weight: 900; margin-bottom: 3vh; }
         .career-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start; }
         .timeline { position: relative; padding-left: 20px; border-left: 1px solid var(--divider); }
         .timeline-node { position: relative; padding-bottom: 2.5vh; }
@@ -114,12 +121,25 @@
         }
         .time-year { font-size: 0.8rem; opacity: 0.5; margin-bottom: 4px; display: block; }
         .time-title { font-size: 1.1rem; font-weight: 900; }
-
         .career-cards { display: flex; flex-direction: column; gap: 1.5vh; }
-        .career-card { border-radius: 24px; padding: 28px 32px; display: flex; flex-direction: column; }
-        .card-white { background: rgba(255,255,255,0.85); color: #000000; box-shadow: 0 10px 30px rgba(0,0,0,0.05); backdrop-filter: blur(10px); }
-        .card-black { background: rgba(0,0,0,0.85); color: #ffffff; backdrop-filter: blur(10px); }
+        .career-card {
+            border-radius: 24px; padding: 28px 32px; display: flex; flex-direction: column;
+        }
+        .card-white {
+            background: rgba(255,255,255,0.85); color: #000000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+        .card-black {
+            background: rgba(0,0,0,0.85); color: #ffffff;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+        }
+        .card-label { opacity: 0.5; letter-spacing: 0.1em; }
         .card-q-text { font-size: clamp(1.2rem, 1.8vw, 2rem); font-weight: 900; line-height: 1.2; margin: 12px 0; }
+        .card-q-text-sm { font-size: clamp(1rem, 1.5vw, 1.7rem); }
+        .card-footer { font-size: 0.8rem; opacity: 0.6; }
 
         /* Transition Button */
         .mode-btn {
@@ -129,6 +149,11 @@
         .mode-btn:hover { background: var(--text); color: var(--bg-start); }
 
         /* 05 Contact */
+        #contact-section { align-items: stretch; }
+        .contact-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            align-items: center; width: 100%; gap: 40px; flex: 1;
+        }
         .btn-group { margin-top: 4vh; display: flex; gap: 15px; }
         .btn {
             padding: 16px 30px; border-radius: 50px;
@@ -136,12 +161,6 @@
             color: var(--text); font-weight: 700;
         }
         .btn-black { background: var(--text); color: var(--bg-start); }
-
-        #contact-section { align-items: stretch; }
-        .contact-grid {
-            display: grid; grid-template-columns: 1fr 1fr;
-            align-items: center; width: 100%; gap: 40px; flex: 1;
-        }
         .contact-3d { height: 58vh; position: relative; }
         #contact-canvas { width: 100%; height: 100%; display: block; }
     </style>
@@ -150,9 +169,9 @@
 
     <nav>
         <div>KIO © 2025</div>
-        <div style="display:flex; align-items:center; gap:20px;">
+        <div class="nav-right">
             <div class="mode-btn" onclick="toggleMode()">TRANSITION</div>
-            <div style="font-size: 0.7rem; letter-spacing: 0.2em;" id="clock">● --:--:-- JST</div>
+            <div id="clock">● --:--:-- JST</div>
         </div>
     </nav>
 
@@ -170,8 +189,8 @@
         <section>
             <div class="profile-grid">
                 <div class="card bento-main">
-                    <h2 style="font-size: clamp(2.8rem, 4vw, 5rem); font-weight: 900;">Kio</h2>
-                    <p style="margin-top:16px; line-height:1.6; font-size: 0.95rem;">2004年生まれ。Layout Artistを経て、Google UX Design認定を取得。AIと人の感性を掛け合わせ、記憶に残る体験を作る。</p>
+                    <h2 class="bento-title">Kio</h2>
+                    <p class="bento-desc">2004年生まれ。Layout Artistを経て、Google UX Design認定を取得。AIと人の感性を掛け合わせ、記憶に残る体験を作る。</p>
                 </div>
                 <div class="card"><h3>01 深く考え、形にする</h3></div>
                 <div class="card"><h3>02 記憶に残る体験</h3></div>
@@ -185,7 +204,7 @@
             <div class="section-content">
                 <div class="work-header">
                     <div>
-                        <small style="display:block; margin-bottom:8px;">03 — SELECTED WORK</small>
+                        <small class="work-label">03 — SELECTED WORK</small>
                         <div class="work-title">Projects.</div>
                     </div>
                     <div class="work-count">5 pieces · 2022—2024</div>
@@ -204,8 +223,8 @@
         <section id="career">
             <canvas id="career-canvas" class="section-canvas"></canvas>
             <div class="section-content">
-                <small style="margin-bottom: 16px; display: block; opacity: 0.6;">04 — CAREER</small>
-                <h2 style="font-size: clamp(2.5rem, 4vw, 4.5rem); font-weight: 900; margin-bottom: 3vh;">Path so far.</h2>
+                <small class="section-label">04 — CAREER</small>
+                <h2 class="career-title">Path so far.</h2>
                 <div class="career-layout">
                     <div class="timeline">
                         <div class="timeline-node"><span class="time-year">2024</span><div class="time-title">Layout Artist — Third Space Production</div></div>
@@ -215,13 +234,13 @@
                     </div>
                     <div class="career-cards">
                         <div class="career-card card-white">
-                            <small style="opacity:0.5; letter-spacing:0.1em;">A QUESTION</small>
+                            <small class="card-label">A QUESTION</small>
                             <div class="card-q-text">この人生が終わるまで、必ずやってみたいことは何？</div>
-                            <div style="font-size:0.8rem; opacity:0.6;">— Kio asks you.</div>
+                            <div class="card-footer">— Kio asks you.</div>
                         </div>
                         <div class="career-card card-black">
-                            <small style="opacity:0.5; letter-spacing:0.1em;">CURRENTLY</small>
-                            <div class="card-q-text" style="font-size: clamp(1rem, 1.5vw, 1.7rem);">AIと感性を編む、次のプロジェクトを構想中。</div>
+                            <small class="card-label">CURRENTLY</small>
+                            <div class="card-q-text card-q-text-sm">AIと感性を編む、次のプロジェクトを構想中。</div>
                         </div>
                     </div>
                 </div>
@@ -304,9 +323,7 @@
         }
         resizeWorkCanvas();
 
-        // 22×22 grid in XZ plane, wave on Y
-        const wCols = 22, wRows = 22;
-        const wCount = wCols * wRows;
+        const wCols = 22, wRows = 22, wCount = wCols * wRows;
         const wGeo = new THREE.BufferGeometry();
         const wPos = new Float32Array(wCount * 3);
         const wBX = [], wBZ = [];
@@ -328,8 +345,6 @@
         const wMat = new THREE.PointsMaterial({ size: 0.07, color: 0x000000, transparent: true, opacity: 0.22 });
         const wPoints = new THREE.Points(wGeo, wMat);
         wScene.add(wPoints);
-
-        // Camera: slight angle from above
         wCamera.position.set(0, 13, 7);
         wCamera.lookAt(0, 0, 0);
 
@@ -366,27 +381,24 @@
         const caGroup = new THREE.Group();
         caScene.add(caGroup);
 
-        // 16 nodes distributed on a sphere surface
         const caNodeCount = 16;
         const caNodes = [];
         const caNodeMat = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.4 });
         const caNodeGeo = new THREE.SphereGeometry(0.07, 8, 8);
-
-        // Fibonacci sphere distribution for even spacing
         const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+
         for(let i = 0; i < caNodeCount; i++) {
             const y = 1 - (i / (caNodeCount - 1)) * 2;
             const r = Math.sqrt(1 - y * y);
             const theta = goldenAngle * i;
-            const scale = 3.2;
-            const n = { x: r * Math.cos(theta) * scale, y: y * scale, z: r * Math.sin(theta) * scale };
+            const s = 3.2;
+            const n = { x: r * Math.cos(theta) * s, y: y * s, z: r * Math.sin(theta) * s };
             caNodes.push(n);
             const mesh = new THREE.Mesh(caNodeGeo, caNodeMat);
             mesh.position.set(n.x, n.y, n.z);
             caGroup.add(mesh);
         }
 
-        // Edges between nodes closer than threshold
         const caEdgeVerts = [];
         for(let i = 0; i < caNodeCount; i++) {
             for(let j = i + 1; j < caNodeCount; j++) {
@@ -394,8 +406,8 @@
                 const dy = caNodes[i].y - caNodes[j].y;
                 const dz = caNodes[i].z - caNodes[j].z;
                 if(Math.sqrt(dx*dx + dy*dy + dz*dz) < 3.6) {
-                    caEdgeVerts.push(caNodes[i].x, caNodes[i].y, caNodes[i].z);
-                    caEdgeVerts.push(caNodes[j].x, caNodes[j].y, caNodes[j].z);
+                    caEdgeVerts.push(caNodes[i].x, caNodes[i].y, caNodes[i].z,
+                                     caNodes[j].x, caNodes[j].y, caNodes[j].z);
                 }
             }
         }
@@ -404,7 +416,6 @@
         caEdgeGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(caEdgeVerts), 3));
         const caEdgeMat = new THREE.LineBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.13 });
         caGroup.add(new THREE.LineSegments(caEdgeGeo, caEdgeMat));
-
         caCamera.position.z = 9;
 
         function animateCareer() {
@@ -432,7 +443,6 @@
         }
         resizeContactCanvas();
 
-        // Lighting
         cScene.add(new THREE.AmbientLight(0xffffff, 0.4));
         const cLight1 = new THREE.DirectionalLight(0xffffff, 3);
         cLight1.position.set(6, 6, 6);
@@ -444,7 +454,6 @@
         cLight3.position.set(3, -4, 5);
         cScene.add(cLight3);
 
-        // TorusKnot
         const cGeo = new THREE.TorusKnotGeometry(2.8, 0.72, 300, 36);
         const cMatSolid = new THREE.MeshStandardMaterial({ color: 0x777777, metalness: 0.95, roughness: 0.1 });
         const cObjSolid = new THREE.Mesh(cGeo, cMatSolid);
@@ -456,7 +465,6 @@
         cObjWire.scale.set(2, 2, 2);
         cScene.add(cObjWire);
 
-        // Orbiting particles (3 rings at different tilts & speeds)
         const orbitRings = [
             { count: 24, radius: 7.5, speed: 0.006, tilt: 0.3 },
             { count: 18, radius: 8.8, speed: -0.004, tilt: 1.1 },
@@ -469,9 +477,8 @@
             const phases = Array.from({ length: ring.count }, (_, i) => (i / ring.count) * Math.PI * 2);
             geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
             const mat = new THREE.PointsMaterial({ size: 0.12, color: 0x999999, transparent: true, opacity: 0.55 });
-            const points = new THREE.Points(geo, mat);
-            cScene.add(points);
-            return { points, geo, phases, ...ring };
+            cScene.add(new THREE.Points(geo, mat));
+            return { geo, phases, ...ring };
         });
 
         cCamera.position.z = 16;
@@ -480,13 +487,9 @@
         function animateContact() {
             requestAnimationFrame(animateContact);
             cTime += 0.01;
-
-            // Torus rotation
             cObjSolid.rotation.y += 0.004;
             cObjSolid.rotation.x += 0.0012;
             cObjWire.rotation.copy(cObjSolid.rotation);
-
-            // Update each orbit ring
             orbitParticles.forEach(ring => {
                 const pos = ring.geo.attributes.position.array;
                 for(let i = 0; i < ring.count; i++) {
@@ -497,7 +500,6 @@
                 }
                 ring.geo.attributes.position.needsUpdate = true;
             });
-
             cRenderer.render(cScene, cCamera);
         }
         animateContact();
@@ -508,13 +510,9 @@
         function toggleMode() {
             const isDark = document.body.classList.toggle('dark-mode');
             const c = isDark ? 1 : 0;
-
-            // Background torus & stars
             gsap.to(material.color, { r: c, g: c, b: c, duration: 0.8 });
             gsap.to(starsMat.color, { r: c, g: c, b: c, duration: 0.8 });
-            // Work wave grid
             gsap.to(wMat.color, { r: c, g: c, b: c, duration: 0.8 });
-            // Career constellation
             gsap.to(caNodeMat.color, { r: c, g: c, b: c, duration: 0.8 });
             gsap.to(caEdgeMat.color, { r: c, g: c, b: c, duration: 0.8 });
         }
