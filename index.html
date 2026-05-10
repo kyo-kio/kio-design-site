@@ -297,7 +297,7 @@
         cScene.add(cLight3);
 
         // Torus Knot — metallic solid + wireframe overlay (like the reference image)
-        const cGeo = new THREE.TorusKnotGeometry(2.8, 0.72, 300, 36);
+        const cGeo = new THREE.TorusKnotGeometry(2.4, 0.62, 300, 36);
 
         const cMatSolid = new THREE.MeshStandardMaterial({
             color: 0x777777,
@@ -316,7 +316,7 @@
         const cObjWire = new THREE.Mesh(cGeo, cMatWire);
         cScene.add(cObjWire);
 
-        cCamera.position.z = 9;
+        cCamera.position.z = 12;
 
         function animateContact() {
             requestAnimationFrame(animateContact);
