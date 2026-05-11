@@ -42,12 +42,21 @@
         }
         .nav-right { display: flex; align-items: center; gap: 20px; }
         #clock { font-size: 0.7rem; letter-spacing: 0.2em; }
-        section {
+        section { position: relative; z-index: 1; }
+        .hero-section    { height: 250vh; }
+        .profile-section { height: 180vh; }
+        .work-section    { height: 250vh; }
+        .career-section  { height: 250vh; }
+        .contact-section { height: 200vh; }
+        .section-sticky {
+            position: sticky; top: 0;
             height: 100vh; overflow: hidden;
-            position: relative; z-index: 1;
             padding: 88px 50px 48px;
             display: flex; flex-direction: column; justify-content: center;
+            cursor: crosshair;
         }
+        .section-sticky a, .section-sticky button, .section-sticky .mode-btn,
+        .section-sticky .project-item { cursor: pointer; }
         .section-canvas {
             position: absolute; top: 0; left: 0;
             width: 100%; height: 100%;
@@ -124,7 +133,7 @@
         .mode-btn:hover { background: var(--text); color: var(--bg-start); }
 
         /* 05 Contact */
-        #contact-section { align-items: stretch; }
+        .contact-sticky { justify-content: center; align-items: stretch; }
         .contact-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: center; width: 100%; gap: 40px; flex: 1; }
         .btn-group { margin-top: 4vh; display: flex; gap: 15px; }
         .btn { padding: 16px 30px; border-radius: 50px; border: 1px solid var(--text); text-decoration: none; color: var(--text); font-weight: 700; }
@@ -148,67 +157,75 @@
     <main class="content">
 
         <!-- 01 Hero -->
-        <section>
-            <div class="hero-title">Designing<br><i>the unusual,</i><br>with care.</div>
-            <div class="hero-sub">「変人には変人なりのものがある。それは他の人が好まない事を好んでやること！」 — KIO</div>
+        <section class="hero-section">
+            <div class="section-sticky">
+                <div class="hero-title">Designing<br><i>the unusual,</i><br>with care.</div>
+                <div class="hero-sub">「変人には変人なりのものがある。それは他の人が好まない事を好んでやること！」 — KIO</div>
+            </div>
         </section>
 
         <!-- 02 Profile -->
-        <section>
-            <div class="profile-grid">
-                <div class="card bento-main">
-                    <h2 class="bento-title">Kio</h2>
-                    <p class="bento-desc">2004年生まれ。Layout Artistを経て、Google UX Design認定を取得。AIと人の感性を掛け合わせ、記憶に残る体験を作る。</p>
+        <section class="profile-section">
+            <div class="section-sticky">
+                <div class="profile-grid">
+                    <div class="card bento-main">
+                        <h2 class="bento-title">Kio</h2>
+                        <p class="bento-desc">2004年生まれ。Layout Artistを経て、Google UX Design認定を取得。AIと人の感性を掛け合わせ、記憶に残る体験を作る。</p>
+                    </div>
+                    <div class="card"><h3>01 深く考え、形にする</h3></div>
+                    <div class="card"><h3>02 記憶に残る体験</h3></div>
+                    <div class="card"><h3>03 自ら考え、行動する</h3></div>
                 </div>
-                <div class="card"><h3>01 深く考え、形にする</h3></div>
-                <div class="card"><h3>02 記憶に残る体験</h3></div>
-                <div class="card"><h3>03 自ら考え、行動する</h3></div>
             </div>
         </section>
 
         <!-- 03 Selected Work -->
         <section class="work-section">
-            <canvas id="work-canvas" class="section-canvas"></canvas>
-            <div class="section-content">
-                <div class="work-header">
-                    <div>
-                        <small class="work-label">03 — SELECTED WORK</small>
-                        <div class="work-title">Projects.</div>
+            <div class="section-sticky">
+                <canvas id="work-canvas" class="section-canvas"></canvas>
+                <div class="section-content">
+                    <div class="work-header">
+                        <div>
+                            <small class="work-label">03 — SELECTED WORK</small>
+                            <div class="work-title">Projects.</div>
+                        </div>
+                        <div class="work-count">5 pieces · 2022—2024</div>
                     </div>
-                    <div class="work-count">5 pieces · 2022—2024</div>
-                </div>
-                <div class="project-list">
-                    <div class="project-item"><div class="p-num">01</div><div class="p-name">My Portfolio</div><div class="p-desc">Self-branded site</div><div class="p-cat">WEB</div><div class="p-year">2024</div></div>
-                    <div class="project-item"><div class="p-num">02</div><div class="p-name">MOVIE BUDDY</div><div class="p-desc">Companion app</div><div class="p-cat">MOBILE</div><div class="p-year">2024</div></div>
-                    <div class="project-item"><div class="p-num">03</div><div class="p-name">Emma</div><div class="p-desc">Identity</div><div class="p-cat">GRAPHIC</div><div class="p-year">2023</div></div>
-                    <div class="project-item"><div class="p-num">04</div><div class="p-name">Relay</div><div class="p-desc">Editorial</div><div class="p-cat">GRAPHIC</div><div class="p-year">2023</div></div>
-                    <div class="project-item"><div class="p-num">05</div><div class="p-name">ENJIN</div><div class="p-desc">Brand mark</div><div class="p-cat">GRAPHIC</div><div class="p-year">2022</div></div>
+                    <div class="project-list">
+                        <div class="project-item"><div class="p-num">01</div><div class="p-name">My Portfolio</div><div class="p-desc">Self-branded site</div><div class="p-cat">WEB</div><div class="p-year">2024</div></div>
+                        <div class="project-item"><div class="p-num">02</div><div class="p-name">MOVIE BUDDY</div><div class="p-desc">Companion app</div><div class="p-cat">MOBILE</div><div class="p-year">2024</div></div>
+                        <div class="project-item"><div class="p-num">03</div><div class="p-name">Emma</div><div class="p-desc">Identity</div><div class="p-cat">GRAPHIC</div><div class="p-year">2023</div></div>
+                        <div class="project-item"><div class="p-num">04</div><div class="p-name">Relay</div><div class="p-desc">Editorial</div><div class="p-cat">GRAPHIC</div><div class="p-year">2023</div></div>
+                        <div class="project-item"><div class="p-num">05</div><div class="p-name">ENJIN</div><div class="p-desc">Brand mark</div><div class="p-cat">GRAPHIC</div><div class="p-year">2022</div></div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- 04 Career -->
-        <section id="career">
-            <canvas id="career-canvas" class="section-canvas"></canvas>
-            <div class="section-content">
-                <small class="section-label">04 — CAREER</small>
-                <h2 class="career-title">Path so far.</h2>
-                <div class="career-layout">
-                    <div class="timeline">
-                        <div class="timeline-node"><span class="time-year">2024</span><div class="time-title">Layout Artist — Third Space Production</div></div>
-                        <div class="timeline-node"><span class="time-year">2023</span><div class="time-title">Customer Service — LULL, Inc.</div></div>
-                        <div class="timeline-node"><span class="time-year">2022</span><div class="time-title">Google UX Design Professional</div></div>
-                        <div class="timeline-node"><span class="time-year">2019</span><div class="time-title">Self-study: AI & Marketing</div></div>
-                    </div>
-                    <div class="career-cards">
-                        <div class="career-card card-white">
-                            <small class="card-label">A QUESTION</small>
-                            <div class="card-q-text">この人生が終わるまで、必ずやってみたいことは何？</div>
-                            <div class="card-footer">— Kio asks you.</div>
+        <section class="career-section" id="career">
+            <div class="section-sticky">
+                <canvas id="career-canvas" class="section-canvas"></canvas>
+                <div class="section-content">
+                    <small class="section-label">04 — CAREER</small>
+                    <h2 class="career-title">Path so far.</h2>
+                    <div class="career-layout">
+                        <div class="timeline">
+                            <div class="timeline-node"><span class="time-year">2024</span><div class="time-title">Layout Artist — Third Space Production</div></div>
+                            <div class="timeline-node"><span class="time-year">2023</span><div class="time-title">Customer Service — LULL, Inc.</div></div>
+                            <div class="timeline-node"><span class="time-year">2022</span><div class="time-title">Google UX Design Professional</div></div>
+                            <div class="timeline-node"><span class="time-year">2019</span><div class="time-title">Self-study: AI & Marketing</div></div>
                         </div>
-                        <div class="career-card card-black">
-                            <small class="card-label">CURRENTLY</small>
-                            <div class="card-q-text card-q-text-sm">AIと感性を編む、次のプロジェクトを構想中。</div>
+                        <div class="career-cards">
+                            <div class="career-card card-white">
+                                <small class="card-label">A QUESTION</small>
+                                <div class="card-q-text">この人生が終わるまで、必ずやってみたいことは何？</div>
+                                <div class="card-footer">— Kio asks you.</div>
+                            </div>
+                            <div class="career-card card-black">
+                                <small class="card-label">CURRENTLY</small>
+                                <div class="card-q-text card-q-text-sm">AIと感性を編む、次のプロジェクトを構想中。</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -216,16 +233,18 @@
         </section>
 
         <!-- 05 Contact -->
-        <section id="contact-section">
-            <div class="contact-grid">
-                <div>
-                    <div class="hero-title">Let's make<br>something <i>unusual.</i></div>
-                    <div class="btn-group">
-                        <a href="mailto:hello@kio-portfolio.com" class="btn btn-black">hello@kio-portfolio.com →</a>
+        <section class="contact-section" id="contact-section">
+            <div class="section-sticky contact-sticky">
+                <div class="contact-grid">
+                    <div>
+                        <div class="hero-title">Let's make<br>something <i>unusual.</i></div>
+                        <div class="btn-group">
+                            <a href="mailto:hello@kio-portfolio.com" class="btn btn-black">hello@kio-portfolio.com →</a>
+                        </div>
                     </div>
-                </div>
-                <div class="contact-3d">
-                    <canvas id="contact-canvas"></canvas>
+                    <div class="contact-3d">
+                        <canvas id="contact-canvas"></canvas>
+                    </div>
                 </div>
             </div>
         </section>
@@ -234,6 +253,32 @@
 
     <script>
         gsap.registerPlugin(ScrollTrigger);
+
+        // =============================================
+        // Global mouse tracking
+        // =============================================
+        let tmx = 0, tmy = 0, mx = 0, my = 0;
+        document.addEventListener('mousemove', e => {
+            tmx = (e.clientX / innerWidth  - 0.5) * 2;
+            tmy = (e.clientY / innerHeight - 0.5) * 2;
+        });
+
+        // =============================================
+        // Scroll progress within each section
+        // =============================================
+        let wProgress = 0, caProgress = 0, ctProgress = 0;
+        function updateScrollProgress() {
+            function prog(el) {
+                if(!el) return 0;
+                const r = el.getBoundingClientRect();
+                const s = el.offsetHeight - innerHeight;
+                return s > 0 ? Math.max(0, Math.min(1, -r.top / s)) : 0;
+            }
+            wProgress  = prog(document.querySelector('.work-section'));
+            caProgress = prog(document.querySelector('.career-section'));
+            ctProgress = prog(document.querySelector('.contact-section'));
+        }
+        window.addEventListener('scroll', updateScrollProgress, { passive: true });
 
         // =============================================
         // 01 Background — Scrolling TorusKnot
@@ -246,7 +291,8 @@
 
         const bgGeo = new THREE.TorusKnotGeometry(2.5, 0.7, 180, 24);
         const material = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true, transparent: true, opacity: 0.12 });
-        scene.add(new THREE.Mesh(bgGeo, material));
+        const bgObj = new THREE.Mesh(bgGeo, material);
+        scene.add(bgObj);
 
         const starsGeo = new THREE.BufferGeometry();
         const sPos = new Float32Array(3000 * 3);
@@ -257,18 +303,31 @@
         scene.add(starsMesh);
 
         camera.position.z = 10;
-        const bgObj = scene.children[0];
+        let bgRotY = 0;
+
+        // Hero click → elastic bounce on background
+        document.querySelector('.hero-section .section-sticky').addEventListener('click', () => {
+            gsap.to(bgObj.scale, { x: 1.4, y: 1.4, z: 1.4, duration: 0.12,
+                onComplete: () => gsap.to(bgObj.scale, { x: 1, y: 1, z: 1, duration: 1.3, ease: 'elastic.out(1, 0.3)' })
+            });
+            gsap.to(starsMesh.rotation, { y: starsMesh.rotation.y + Math.PI * 0.4, duration: 1.5, ease: 'power2.out' });
+        });
 
         (function animateBg() {
             requestAnimationFrame(animateBg);
-            bgObj.rotation.y += 0.003;
-            bgObj.rotation.x += 0.001;
+            mx += (tmx - mx) * 0.04;
+            my += (tmy - my) * 0.04;
+            bgRotY += 0.003;
+            bgObj.rotation.y = bgRotY + mx * 0.25;
+            bgObj.rotation.x = my * 0.2;
             starsMesh.rotation.y += 0.0003;
+            camera.position.x += (-mx * 0.6 - camera.position.x) * 0.04;
+            camera.position.y += ( my * 0.4 - camera.position.y) * 0.04;
             renderer.render(scene, camera);
         })();
 
         gsap.to(camera.position, {
-            z: -15,
+            z: -22,
             scrollTrigger: { trigger: '.content', start: 'top top', end: 'bottom bottom', scrub: 2 }
         });
 
@@ -314,13 +373,25 @@
         wCamera.position.set(0, 10, 4.5);
         wCamera.lookAt(0, 0, 0);
 
+        // Work click → burst outward + elastic particle size
+        document.querySelector('.work-section .section-sticky').addEventListener('click', () => {
+            vState.forEach(s => { s.r = Math.min(s.r + Math.random() * 4, 9.8); });
+            gsap.to(vortexMat, { size: 0.14, opacity: 0.9, duration: 0.1,
+                onComplete: () => gsap.to(vortexMat, { size: 0.055, opacity: 0.55, duration: 0.9, ease: 'elastic.out(1, 0.3)' })
+            });
+        });
+
         (function animateWork() {
             requestAnimationFrame(animateWork);
+            const speedMult = 1 + wProgress * 3.5;
+            wCamera.position.x += (mx * 2.5 - wCamera.position.x) * 0.04;
+            wCamera.position.z += (4.5 + my - wCamera.position.z) * 0.04;
+            wCamera.lookAt(0, 0, 0);
             const p = vGeo.attributes.position.array;
             for(let i = 0; i < vCount; i++) {
                 const s = vState[i];
-                s.angle += s.orbit;
-                s.r     -= s.inward * 0.016;
+                s.angle += s.orbit * speedMult;
+                s.r     -= s.inward * 0.016 * speedMult;
                 if(s.r < 0.15) {
                     s.r     = 4.5 + Math.random() * 5;
                     s.angle = Math.random() * Math.PI * 2;
@@ -401,10 +472,29 @@
         const _caObj = new THREE.Object3D();
         let caT = 0;
 
+        // Career click → scatter nodes + elastic bounce
+        document.querySelector('.career-section .section-sticky').addEventListener('click', () => {
+            caNodes.forEach(n => {
+                n.vx += (Math.random()-0.5) * 0.12;
+                n.vy += (Math.random()-0.5) * 0.12;
+                n.vz += (Math.random()-0.5) * 0.08;
+            });
+            gsap.to(caGroup.scale, { x: 1.35, y: 1.35, z: 1.35, duration: 0.1,
+                onComplete: () => gsap.to(caGroup.scale, { x: 1, y: 1, z: 1, duration: 1.0, ease: 'elastic.out(1.1, 0.4)' })
+            });
+        });
+
         (function animateCareer() {
             requestAnimationFrame(animateCareer);
             caT += 0.01;
             caGroup.rotation.y += 0.0028;
+            const connectDist = CONNECT_DIST + caProgress * 2.5;
+            const pulseSpeed  = 1 + caProgress * 2;
+
+            // Mouse parallax on camera
+            caCamera.position.x += (mx * 2.5 - caCamera.position.x) * 0.04;
+            caCamera.position.y += (-my * 1.5 - caCamera.position.y) * 0.04;
+            caCamera.lookAt(0, 0, 0);
 
             // Drift nodes
             caNodes.forEach(n => {
@@ -424,13 +514,14 @@
             });
             caNodeInst.instanceMatrix.needsUpdate = true;
 
-            // Build connection lines between nearby nodes
+            // Build connection lines — density increases with scroll
+            const cd2 = connectDist * connectDist;
             let lineIdx = 0;
             for(let i = 0; i < NODE_COUNT && lineIdx < MAX_LINES; i++) {
                 for(let j = i+1; j < NODE_COUNT && lineIdx < MAX_LINES; j++) {
                     const ni = caNodes[i], nj = caNodes[j];
                     const dx = ni.x-nj.x, dy = ni.y-nj.y, dz = ni.z-nj.z;
-                    if(dx*dx+dy*dy+dz*dz < CONNECT_DIST*CONNECT_DIST) {
+                    if(dx*dx+dy*dy+dz*dz < cd2) {
                         caLineArr[lineIdx*6]   = ni.x; caLineArr[lineIdx*6+1] = ni.y; caLineArr[lineIdx*6+2] = ni.z;
                         caLineArr[lineIdx*6+3] = nj.x; caLineArr[lineIdx*6+4] = nj.y; caLineArr[lineIdx*6+5] = nj.z;
                         lineIdx++;
@@ -444,9 +535,9 @@
             caLineGeo.attributes.position.needsUpdate = true;
             caLineGeo.setDrawRange(0, lineIdx * 2);
 
-            // Animate pulse signals
+            // Animate pulse signals — speed up with scroll
             caPulses.forEach((pulse, i) => {
-                pulse.t += pulse.speed;
+                pulse.t += pulse.speed * pulseSpeed;
                 if(pulse.t >= 1) {
                     pulse.from = pulse.to;
                     pulse.to   = Math.floor(Math.random()*NODE_COUNT);
@@ -547,19 +638,32 @@
         cCamera.position.z = 16;
         let cT = 0;
 
+        // Contact click → elastic bounce on torus
+        document.querySelector('.contact-section .section-sticky').addEventListener('click', () => {
+            gsap.to([cSolid.scale, cWire.scale], { x: 2.7, y: 2.7, z: 2.7, duration: 0.1,
+                onComplete: () => gsap.to([cSolid.scale, cWire.scale], { x: 2, y: 2, z: 2, duration: 1.1, ease: 'elastic.out(1.2, 0.35)' })
+            });
+        });
+
         (function animateContact() {
             requestAnimationFrame(animateContact);
             cT += 0.01;
+            const speedBoost = 1 + ctProgress * 2.5;
 
-            cSolid.rotation.y += 0.004;
-            cSolid.rotation.x += 0.0012;
+            // Mouse parallax on camera
+            cCamera.position.x += (mx * 2 - cCamera.position.x) * 0.04;
+            cCamera.position.y += (-my - cCamera.position.y) * 0.04;
+            cCamera.lookAt(0, 0, 0);
+
+            cSolid.rotation.y += 0.004 * speedBoost;
+            cSolid.rotation.x += 0.0012 * speedBoost;
             cWire.rotation.copy(cSolid.rotation);
 
-            // Update orbit rings
+            // Update orbit rings — speed up with scroll
             orbitSystems.forEach(ring => {
                 const p = ring.geo.attributes.position.array;
                 for(let i = 0; i < ring.count; i++) {
-                    const a = ring.phases[i] + cT * ring.speed * 60;
+                    const a = ring.phases[i] + cT * ring.speed * 60 * speedBoost;
                     p[i*3]   = ring.r * Math.cos(a);
                     p[i*3+1] = ring.r * Math.sin(a) * Math.sin(ring.tilt);
                     p[i*3+2] = ring.r * Math.sin(a) * Math.cos(ring.tilt);
