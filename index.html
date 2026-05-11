@@ -302,7 +302,7 @@
         const starsMesh = new THREE.Points(starsGeo, starsMat);
         scene.add(starsMesh);
 
-        camera.position.z = 4;
+        camera.position.z = 5;
         let bgRotY = 0;
 
         // Hero click → elastic bounce on background
@@ -321,8 +321,8 @@
             bgObj.rotation.y = bgRotY + mx * 0.25;
             bgObj.rotation.x = my * 0.2;
             starsMesh.rotation.y += 0.0003;
-            camera.position.x += (-mx * 0.35 - camera.position.x) * 0.04;
-            camera.position.y += ( my * 0.25 - camera.position.y) * 0.04;
+            camera.position.x += (-mx * 0.6 - camera.position.x) * 0.04;
+            camera.position.y += ( my * 0.4 - camera.position.y) * 0.04;
             renderer.render(scene, camera);
         })();
 
