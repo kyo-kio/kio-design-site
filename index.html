@@ -44,13 +44,9 @@
         .nav-right { display: flex; align-items: center; gap: 20px; }
         #clock { font-size: 0.7rem; letter-spacing: 0.2em; }
 
-        /* ── Section system ── */
         section { position: relative; z-index: 1; }
-        .hero-section,
-        .profile-section,
-        .work-section,
-        .career-section,
-        .contact-section { height: 200vh; }
+        .hero-section, .profile-section, .work-section,
+        .career-section, .contact-section { height: 200vh; }
 
         .section-sticky {
             position: sticky; top: 0;
@@ -61,12 +57,12 @@
         .section-sticky a, .section-sticky .mode-btn,
         .section-sticky .project-item { cursor: pointer; }
 
-        /* ── 01 Hero ── */
+        /* 01 Hero */
         .hero-title { font-size: clamp(3.5rem, 9vw, 130px); line-height: 0.9; font-weight: 900; letter-spacing: -0.03em; }
         .hero-title i { font-weight: 400; font-style: italic; }
         .hero-sub { position: absolute; bottom: 40px; right: 50px; text-align: right; max-width: 380px; font-size: 0.85rem; line-height: 1.6; }
 
-        /* ── 02 Profile ── */
+        /* 02 Profile */
         .profile-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 12px; margin-top: 2vh; }
         .card {
             background: rgba(255,255,255,0.2);
@@ -79,7 +75,7 @@
         .bento-desc { margin-top: 16px; line-height: 1.6; font-size: 0.95rem; }
         .card h3 { font-size: 1.35rem; margin-top: 10px; font-weight: 900; }
 
-        /* ── 03 Work ── */
+        /* 03 Work */
         .work-label { display: block; margin-bottom: 8px; }
         .work-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5vh; }
         .work-title { font-size: clamp(3rem, 5.5vw, 7rem); font-weight: 900; letter-spacing: -0.02em; }
@@ -87,14 +83,13 @@
         .project-list { border-top: 1px solid var(--divider); }
         .project-item {
             display: grid; grid-template-columns: 40px 1.5fr 1fr 0.8fr 0.5fr; align-items: center;
-            padding: 1.8vh 0; border-bottom: 1px solid var(--divider);
-            transition: 0.4s ease;
+            padding: 1.8vh 0; border-bottom: 1px solid var(--divider); transition: 0.4s ease;
         }
         .project-item:hover { opacity: 0.4; }
         .p-num { font-size: 0.8rem; opacity: 0.5; }
         .p-name { font-size: clamp(1.4rem, 2.2vw, 2.8rem); font-weight: 900; }
 
-        /* ── 04 Career ── */
+        /* 04 Career */
         .section-label { margin-bottom: 16px; display: block; opacity: 0.6; }
         .career-title { font-size: clamp(2.5rem, 4vw, 4.5rem); font-weight: 900; margin-bottom: 3vh; }
         .career-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start; }
@@ -111,24 +106,21 @@
         .card-white {
             background: rgba(255,255,255,0.85); color: #000;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
         }
         .card-black {
             background: rgba(0,0,0,0.85); color: #fff;
-            -webkit-backdrop-filter: blur(10px);
-            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
         }
         .card-label { opacity: 0.5; letter-spacing: 0.1em; }
         .card-q-text { font-size: clamp(1.2rem, 1.8vw, 2rem); font-weight: 900; line-height: 1.2; margin: 12px 0; }
         .card-q-text-sm { font-size: clamp(1rem, 1.5vw, 1.7rem); }
         .card-footer { font-size: 0.8rem; opacity: 0.6; }
 
-        /* ── Transition button ── */
         .mode-btn { cursor: pointer; border: 1px solid var(--text); padding: 5px 15px; border-radius: 30px; font-size: 0.6rem; transition: 0.3s; }
         .mode-btn:hover { background: var(--text); color: var(--bg-start); }
 
-        /* ── 05 Contact ── */
+        /* 05 Contact */
         .btn-group { margin-top: 4vh; display: flex; gap: 15px; }
         .btn { padding: 16px 30px; border-radius: 50px; border: 1px solid var(--text); text-decoration: none; color: var(--text); font-weight: 700; }
         .btn-black { background: var(--text); color: var(--bg-start); }
@@ -239,71 +231,177 @@
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        // ── Mouse tracking ──────────────────────────────
+        // ── Mouse ────────────────────────────────────────
         let tmx = 0, tmy = 0, mx = 0, my = 0;
         document.addEventListener('mousemove', e => {
             tmx = (e.clientX / innerWidth  - 0.5) * 2;
             tmy = (e.clientY / innerHeight - 0.5) * 2;
         });
 
-        // ── Click disturbance ───────────────────────────
+        // ── Click pulse ──────────────────────────────────
         let clickPulse = 0;
         document.addEventListener('click', () => { clickPulse = 1; });
 
-        // ── Renderer ────────────────────────────────────
+        // ── Renderer ─────────────────────────────────────
         const scene    = new THREE.Scene();
-        const camera   = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 300);
+        const camera   = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, 0.1, 500);
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
         renderer.setSize(innerWidth, innerHeight);
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        // ── Wave surface layers ─────────────────────────
-        // 5 horizontal planes displaced in Y → organic wave landscape
-        const waveParams = [
-            { amp: 1.6, fx: 0.20, fz: 0.13, spd: 0.42, ph: 0.0,  yOff:  0,  op: 0.14 },
-            { amp: 1.2, fx: 0.17, fz: 0.10, spd: 0.35, ph: 1.4,  yOff: -3,  op: 0.10 },
-            { amp: 1.9, fx: 0.26, fz: 0.16, spd: 0.50, ph: 2.8,  yOff: -6,  op: 0.08 },
-            { amp: 0.9, fx: 0.19, fz: 0.12, spd: 0.30, ph: 4.2,  yOff: -9,  op: 0.06 },
-            { amp: 1.4, fx: 0.23, fz: 0.14, spd: 0.45, ph: 5.6,  yOff:-12,  op: 0.05 },
-        ];
-
-        const waveGeos = [];
-        const waveMats = [];
-
-        waveParams.forEach(p => {
-            const geo = new THREE.PlaneGeometry(70, 28, 90, 38);
-            geo.rotateX(-Math.PI / 2); // lay flat in XZ plane
-            const mat = new THREE.MeshBasicMaterial({
-                color: 0x000000, wireframe: true, transparent: true, opacity: p.op
-            });
-            const mesh = new THREE.Mesh(geo, mat);
-            mesh.position.y = p.yOff;
+        // ── Material registry (for dark/light toggle) ────
+        const sceneMats = [];
+        function mkMat(opacity) {
+            const m = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true, transparent: true, opacity });
+            sceneMats.push(m);
+            return m;
+        }
+        function add(geo, opacity, px, py, pz, rx, ry, rz) {
+            const mesh = new THREE.Mesh(geo, mkMat(opacity));
+            if(px !== undefined) mesh.position.set(px, py, pz);
+            if(rx !== undefined) { mesh.rotation.x = rx; mesh.rotation.y = ry; mesh.rotation.z = rz; }
             scene.add(mesh);
-            waveGeos.push(geo);
-            waveMats.push(mat);
-        });
+            return mesh;
+        }
 
-        // ── Camera journey (5 stations, one per section) ─
-        // Page = 5 × 200vh = 1000vh total
-        // Each station: 150vh hold + 50vh transition → feel of gentle pause
+        // ═══════════════════════════════════════════════
+        // CITY SCENE GEOMETRY
+        // ═══════════════════════════════════════════════
+
+        // 1. Ground grid (large platform base)
+        (function buildGround() {
+            const geo = new THREE.PlaneGeometry(130, 130, 75, 75);
+            geo.rotateX(-Math.PI / 2);
+            const pos = geo.attributes.position;
+            for(let i = 0; i < pos.count; i++) {
+                const x = pos.getX(i), z = pos.getZ(i);
+                pos.setY(i, 0.18 * Math.sin(x * 0.22) * Math.cos(z * 0.18)
+                           + 0.08 * Math.sin(x * 0.45 + z * 0.3));
+            }
+            pos.needsUpdate = true;
+            add(geo, 0.09, 0, 0, 0);
+        })();
+
+        // 2. Geodesic dome — focal point for Profile section
+        // Centered at (0, 0, 0)
+        const dome = add(new THREE.IcosahedronGeometry(8, 3), 0.38, 0, 0, 0);
+        // Half-sphere base ring
+        for(let r of [9, 12, 15]) {
+            add(new THREE.TorusGeometry(r, 0.1, 5, 48), 0.18, 0, 0, 0, Math.PI/2, 0, 0);
+        }
+
+        // 3. Curvilinear ribbon buildings — focal for Work section
+        // Positioned at left-back area (~-18, z:-10 area)
+        function ribbonBuilding(cx, cz, rotY, W, floors, amp, freq) {
+            for(let fl = 0; fl <= floors; fl++) {
+                const pts = [];
+                for(let j = 0; j <= 40; j++) {
+                    const t = j / 40;
+                    pts.push(new THREE.Vector3(
+                        (t - 0.5) * W,
+                        0,
+                        amp * Math.sin(t * freq * Math.PI * 2) + amp * 0.35 * Math.sin(t * freq * 1.8 * Math.PI * 2)
+                    ));
+                }
+                const curve = new THREE.CatmullRomCurve3(pts);
+                const geo   = new THREE.TubeGeometry(curve, 40, 0.07, 5, false);
+                const mesh  = new THREE.Mesh(geo, mkMat(0.30));
+                mesh.rotation.y = rotY;
+                mesh.position.set(cx, fl * 1.8, cz);
+                scene.add(mesh);
+            }
+            // Vertical connector columns
+            for(let j = 0; j <= 4; j++) {
+                const t   = j / 4;
+                const bx  = (t - 0.5) * W;
+                const bz  = amp * Math.sin(t * freq * Math.PI * 2);
+                const pts = [];
+                for(let fl = 0; fl <= floors; fl++) pts.push(new THREE.Vector3(bx, fl * 1.8, bz));
+                const curve = new THREE.CatmullRomCurve3(pts);
+                const geo   = new THREE.TubeGeometry(curve, floors * 4, 0.05, 4, false);
+                const mesh  = new THREE.Mesh(geo, mkMat(0.22));
+                mesh.rotation.y = rotY;
+                mesh.position.set(cx, 0, cz);
+                scene.add(mesh);
+            }
+        }
+        ribbonBuilding(-20, -10,  0.3,  24, 6, 2.8, 1.2);
+        ribbonBuilding(-12, -24, -0.4,  20, 5, 2.2, 1.5);
+        ribbonBuilding( 10, -18,  0.7,  18, 5, 2.0, 1.4);
+        // Small accent blob structures
+        add(new THREE.IcosahedronGeometry(3, 1), 0.25, -22, 0, -5);
+        add(new THREE.IcosahedronGeometry(2, 1), 0.22,  14, 0,  8);
+        add(new THREE.IcosahedronGeometry(2.5,1), 0.22, -6, 0,  14);
+
+        // 4. Helical tower — focal for Contact section
+        // Positioned at (22, 0, -12)
+        const TOWER_X = 22, TOWER_Z = -12;
+        const TURNS = 8, TOWER_H = 30, HELIX_R = 3.2;
+        (function buildTower() {
+            const pts = [];
+            for(let i = 0; i <= TURNS * 48; i++) {
+                const t   = i / (TURNS * 48);
+                const ang = t * TURNS * Math.PI * 2;
+                pts.push(new THREE.Vector3(Math.cos(ang) * HELIX_R, t * TOWER_H - TOWER_H / 2, Math.sin(ang) * HELIX_R));
+            }
+            const helixMesh = new THREE.Mesh(
+                new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), TURNS * 48, 0.1, 7, false),
+                mkMat(0.55)
+            );
+            helixMesh.position.set(TOWER_X, 0, TOWER_Z);
+            scene.add(helixMesh);
+            // Platform rings
+            for(let i = 0; i <= TURNS; i++) {
+                const y = (i / TURNS) * TOWER_H - TOWER_H / 2;
+                const r = HELIX_R + 0.8 + i * 0.3;
+                add(new THREE.TorusGeometry(r, 0.13, 5, 36), 0.42, TOWER_X, y, TOWER_Z, Math.PI/2, 0, 0);
+            }
+            // Central spine
+            const spinePts = [new THREE.Vector3(0, -TOWER_H/2, 0), new THREE.Vector3(0, TOWER_H/2, 0)];
+            const spineMesh = new THREE.Mesh(
+                new THREE.TubeGeometry(new THREE.CatmullRomCurve3(spinePts), 10, 0.15, 6, false),
+                mkMat(0.40)
+            );
+            spineMesh.position.set(TOWER_X, 0, TOWER_Z);
+            scene.add(spineMesh);
+        })();
+
+        // 5. Connecting paths (roads between structures)
+        function addPath(rawPts, op) {
+            const pts   = rawPts.map(p => new THREE.Vector3(...p));
+            const curve = new THREE.CatmullRomCurve3(pts);
+            const mesh  = new THREE.Mesh(new THREE.TubeGeometry(curve, 40, 0.12, 5, false), mkMat(op));
+            scene.add(mesh);
+        }
+        addPath([[0,0.4,0], [-10,0.4,-6], [-20,0.4,-10]], 0.20);
+        addPath([[0,0.4,0], [12,0.4,-5],  [22,0.4,-12]], 0.20);
+        addPath([[-20,0.4,-10], [0,0.4,-20], [22,0.4,-12]], 0.16);
+        addPath([[0,0.4,0], [0,0.4,12],   [-6,0.4,18]], 0.14);
+
+        // 6. Ground-level organic pads (circular terraces)
+        for(let rr of [18, 25, 32]) {
+            add(new THREE.TorusGeometry(rr, 0.1, 4, 56), 0.10, 0, 0, 0, Math.PI/2, 0, 0);
+        }
+
+        // ═══════════════════════════════════════════════
+        // CAMERA JOURNEY
+        // 5 sections × 200vh = 1000vh total
+        // Each station: 150vh hold (0.15) + 50vh transition (0.05)
+        // ═══════════════════════════════════════════════
         const stations = [
-            { x:  0, y: 17, z: 24, lx:  0, ly: -3, lz:  0 },  // 01 Hero    — aerial overview
-            { x:  4, y: 10, z: 19, lx:  4, ly: -4, lz: -2 },  // 02 Profile — descending
-            { x: 10, y:  3, z: 14, lx: 10, ly: -5, lz: -4 },  // 03 Work    — wave level
-            { x: 16, y: -1, z:  8, lx: 16, ly: -5, lz:-10 },  // 04 Career  — skimming surface
-            { x:  4, y: 12, z: 22, lx:  0, ly: -2, lz:  0 },  // 05 Contact — emerge + wide
+            { x:  4, y: 52, z: 44, lx:  0, ly:  0, lz: -5 },  // 01 Hero    — bird's eye
+            { x:  0, y: 18, z: 24, lx:  0, ly:  4, lz:  0 },  // 02 Profile — dome
+            { x:-18, y: 14, z:  8, lx:-18, ly:  4, lz:-16 },  // 03 Work    — curvilinear bldgs
+            { x:  8, y:  6, z:  4, lx:  8, ly:  0, lz:-12 },  // 04 Career  — fly through
+            { x: 22, y: 22, z: 20, lx: 22, ly:  5, lz:-12 },  // 05 Contact — helical tower
         ];
 
-        // Animated target object driven by GSAP timeline + scroll
-        const cam    = { ...stations[0] }; // GSAP writes here
-        const camCur = { ...stations[0] }; // lerped toward cam each frame
+        const cam    = { ...stations[0] };
+        const camCur = { ...stations[0] };
 
-        const ease = 'power2.inOut';
         const tl   = gsap.timeline({ paused: true });
-
-        // Build timeline: hold (0.15) → transition (0.05) per station
-        // Total duration = 1.0 → maps 1-to-1 with scroll progress
+        const ease = 'power2.inOut';
         tl.to(cam, { ...stations[0], duration: 0.15, ease: 'none' })
           .to(cam, { ...stations[1], duration: 0.05, ease })
           .to(cam, { ...stations[1], duration: 0.15, ease: 'none' })
@@ -322,18 +420,27 @@
         });
 
         // ── Animation loop ──────────────────────────────
-        let waveT = 0;
-
+        let t = 0;
         (function animate() {
             requestAnimationFrame(animate);
 
-            waveT       += 0.008;
-            clickPulse   = Math.max(0, clickPulse - 0.018);
+            t           += 0.008;
+            clickPulse   = Math.max(0, clickPulse - 0.015);
             mx          += (tmx - mx) * 0.04;
             my          += (tmy - my) * 0.04;
 
-            // Smooth camera lerp toward GSAP target
-            const lf = 0.045;
+            // Dome slow rotation
+            dome.rotation.y += 0.0015;
+
+            // Click effect: burst dome scale
+            if(clickPulse > 0.95) {
+                gsap.to(dome.scale, { x: 1.25, y: 1.25, z: 1.25, duration: 0.1,
+                    onComplete: () => gsap.to(dome.scale, { x: 1, y: 1, z: 1, duration: 0.9, ease: 'elastic.out(1, 0.4)' })
+                });
+            }
+
+            // Lerp camera toward GSAP target
+            const lf = 0.04;
             camCur.x  += (cam.x  - camCur.x)  * lf;
             camCur.y  += (cam.y  - camCur.y)  * lf;
             camCur.z  += (cam.z  - camCur.z)  * lf;
@@ -341,31 +448,12 @@
             camCur.ly += (cam.ly - camCur.ly) * lf;
             camCur.lz += (cam.lz - camCur.lz) * lf;
 
-            // Apply mouse parallax on top of lerped position
             camera.position.set(
-                camCur.x + mx * 1.8,
-                camCur.y - my * 1.0,
+                camCur.x + mx * 2.0,
+                camCur.y - my * 1.2,
                 camCur.z
             );
             camera.lookAt(camCur.lx, camCur.ly, camCur.lz);
-
-            // Update wave vertex Y displacement
-            waveGeos.forEach((geo, li) => {
-                const p   = waveParams[li];
-                const pos = geo.attributes.position;
-                for(let i = 0; i < pos.count; i++) {
-                    const px = pos.getX(i);
-                    const pz = pos.getZ(i);
-                    let y = p.amp * Math.sin(p.fx * px + p.fz * pz + waveT * p.spd + p.ph)
-                          + p.amp * 0.4 * Math.cos(p.fx * 0.65 * px - waveT * p.spd * 0.7 + p.ph * 0.5);
-                    // Click ripple: fast transient wave across all vertices
-                    if(clickPulse > 0) {
-                        y += clickPulse * 0.7 * Math.sin(px * 1.8 + pz * 1.2 + waveT * 18);
-                    }
-                    pos.setY(i, y);
-                }
-                pos.needsUpdate = true;
-            });
 
             renderer.render(scene, camera);
         })();
@@ -374,7 +462,7 @@
         function toggleMode() {
             const isDark = document.body.classList.toggle('dark-mode');
             const c = isDark ? 1 : 0;
-            waveMats.forEach(mat => gsap.to(mat.color, { r: c, g: c, b: c, duration: 0.8 }));
+            sceneMats.forEach(m => gsap.to(m.color, { r: c, g: c, b: c, duration: 0.8 }));
         }
 
         // ── Live clock JST ──────────────────────────────
