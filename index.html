@@ -3,171 +3,354 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Architecture Portfolio Background</title>
+    <title>Kio | Designing the unusual</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,900;1,400&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; background: #000; color: #fff; font-family: sans-serif; overflow-x: hidden; }
-        canvas { position: fixed; top: 0; left: 0; outline: none; z-index: -1; }
+        :root {
+            --bg-start: #f0ede5;
+            --bg-end:   #e2dfd5;
+            --text:     #0a0a0a;
+            --divider:  rgba(0,0,0,0.12);
+        }
+        body.dark-mode {
+            --bg-start: #0a0a0a;
+            --bg-end:   #1a1a1a;
+            --text:     #f0ede5;
+            --divider:  rgba(255,255,255,0.12);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+            background-attachment: fixed;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            transition: background 1.2s ease, color 0.8s ease;
+            overflow-x: hidden;
+            cursor: crosshair;
+        }
+        canvas {
+            position: fixed; top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 0; pointer-events: none;
+            outline: none;
+        }
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 24px 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100; font-size: 0.8rem; font-weight: bold; letter-spacing: 0.1em;
+        }
+        .nav-right { display: flex; align-items: center; gap: 20px; }
+        #clock { font-size: 0.7rem; letter-spacing: 0.2em; }
 
-        /* コンテンツのセクション */
-        section {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 10%;
-            pointer-events: none; /* 背景の3Dを操作したい場合は適宜調整 */
+        section { position: relative; z-index: 1; }
+        .hero-section, .profile-section, .work-section,
+        .career-section, .contact-section { height: 200vh; }
+
+        .section-sticky {
+            position: sticky; top: 0;
+            height: 100vh; overflow: hidden;
+            padding: 88px 50px 48px;
+            display: flex; flex-direction: column; justify-content: center;
         }
-        .content {
-            max-width: 500px;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 2rem;
-            border-left: 2px solid #fff;
-            opacity: 0; /* GSAPでアニメーションさせる */
-            transform: translateY(50px);
+        .section-sticky a, .section-sticky .mode-btn,
+        .section-sticky .project-item { cursor: pointer; }
+
+        /* 01 Hero */
+        .hero-title { font-size: clamp(3.5rem, 9vw, 130px); line-height: 0.9; font-weight: 900; letter-spacing: -0.03em; }
+        .hero-title i { font-weight: 400; font-style: italic; }
+        .hero-sub { position: absolute; bottom: 40px; right: 50px; text-align: right; max-width: 380px; font-size: 0.85rem; line-height: 1.6; }
+
+        /* 02 Profile */
+        .profile-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 12px; margin-top: 2vh; }
+        .card {
+            background: rgba(255,255,255,0.2);
+            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
+            border-radius: 20px; padding: 28px; border: 1px solid rgba(255,255,255,0.1);
         }
-        h2 { font-size: 3rem; margin: 0; text-transform: uppercase; letter-spacing: 5px; }
+        .bento-main { grid-row: span 3; background: var(--text) !important; color: var(--bg-start); }
+        .bento-title { font-size: clamp(2.8rem, 4vw, 5rem); font-weight: 900; }
+        .bento-desc { margin-top: 16px; line-height: 1.6; font-size: 0.95rem; }
+        .card h3 { font-size: 1.35rem; margin-top: 10px; font-weight: 900; }
+
+        /* 03 Work */
+        .work-label { display: block; margin-bottom: 8px; }
+        .work-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5vh; }
+        .work-title { font-size: clamp(3rem, 5.5vw, 7rem); font-weight: 900; letter-spacing: -0.02em; }
+        .work-count { font-size: 0.8rem; opacity: 0.6; margin-bottom: 8px; }
+        .project-list { border-top: 1px solid var(--divider); }
+        .project-item {
+            display: grid; grid-template-columns: 40px 1.5fr 1fr 0.8fr 0.5fr; align-items: center;
+            padding: 1.8vh 0; border-bottom: 1px solid var(--divider); transition: 0.4s ease;
+        }
+        .project-item:hover { opacity: 0.4; }
+        .p-num { font-size: 0.8rem; opacity: 0.5; }
+        .p-name { font-size: clamp(1.4rem, 2.2vw, 2.8rem); font-weight: 900; }
+
+        /* 04 Career */
+        .section-label { margin-bottom: 16px; display: block; opacity: 0.6; }
+        .career-title { font-size: clamp(2.5rem, 4vw, 4.5rem); font-weight: 900; margin-bottom: 3vh; }
+        .career-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: start; }
+        .timeline { position: relative; padding-left: 20px; border-left: 1px solid var(--divider); }
+        .timeline-node { position: relative; padding-bottom: 2.5vh; }
+        .timeline-node::before {
+            content: ''; position: absolute; left: -24px; top: 5px;
+            width: 7px; height: 7px; background: var(--text); border-radius: 50%;
+        }
+        .time-year { font-size: 0.8rem; opacity: 0.5; margin-bottom: 4px; display: block; }
+        .time-title { font-size: 1.1rem; font-weight: 900; }
+        .career-cards { display: flex; flex-direction: column; gap: 1.5vh; }
+        .career-card { border-radius: 24px; padding: 28px 32px; display: flex; flex-direction: column; }
+        .card-white {
+            background: rgba(255,255,255,0.85); color: #000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+        }
+        .card-black {
+            background: rgba(0,0,0,0.85); color: #fff;
+            -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+        }
+        .card-label { opacity: 0.5; letter-spacing: 0.1em; }
+        .card-q-text { font-size: clamp(1.2rem, 1.8vw, 2rem); font-weight: 900; line-height: 1.2; margin: 12px 0; }
+        .card-q-text-sm { font-size: clamp(1rem, 1.5vw, 1.7rem); }
+        .card-footer { font-size: 0.8rem; opacity: 0.6; }
+
+        .mode-btn { cursor: pointer; border: 1px solid var(--text); padding: 5px 15px; border-radius: 30px; font-size: 0.6rem; transition: 0.3s; }
+        .mode-btn:hover { background: var(--text); color: var(--bg-start); }
+
+        /* 05 Contact */
+        .btn-group { margin-top: 4vh; display: flex; gap: 15px; }
+        .btn { padding: 16px 30px; border-radius: 50px; border: 1px solid var(--text); text-decoration: none; color: var(--text); font-weight: 700; }
+        .btn-black { background: var(--text); color: var(--bg-start); }
     </style>
 </head>
 <body>
 
+    <nav>
+        <div>KIO © 2025</div>
+        <div class="nav-right">
+            <div class="mode-btn" onclick="toggleMode()">TRANSITION</div>
+            <div id="clock">● --:--:-- JST</div>
+        </div>
+    </nav>
+
     <canvas id="webgl"></canvas>
 
-    <section id="section1">
-        <div class="content">
-            <h2>About Me</h2>
-            <p>複雑な構造体の中に潜む、私のアイデンティティを紹介します。</p>
-        </div>
-    </section>
+    <main class="content">
 
-    <section id="section2">
-        <div class="content">
-            <h2>Works</h2>
-            <p>幾何学的な美しさと機能性を両立させたプロジェクト群。</p>
-        </div>
-    </section>
+        <!-- 01 Hero -->
+        <section class="hero-section">
+            <div class="section-sticky">
+                <div class="hero-title">Designing<br><i>the unusual,</i><br>with care.</div>
+                <div class="hero-sub">「変人には変人なりのものがある。それは他の人が好まない事を好んでやること！」 — KIO</div>
+            </div>
+        </section>
 
-    <section id="section3">
-        <div class="content">
-            <h2>Contact</h2>
-            <p>新しい構造を共に作り上げましょう。</p>
-        </div>
-    </section>
+        <!-- 02 Profile -->
+        <section class="profile-section">
+            <div class="section-sticky">
+                <div class="profile-grid">
+                    <div class="card bento-main">
+                        <h2 class="bento-title">Kio</h2>
+                        <p class="bento-desc">2004年生まれ。Layout Artistを経て、Google UX Design認定を取得。AIと人の感性を掛け合わせ、記憶に残る体験を作る。</p>
+                    </div>
+                    <div class="card"><h3>01 深く考え、形にする</h3></div>
+                    <div class="card"><h3>02 記憶に残る体験</h3></div>
+                    <div class="card"><h3>03 自ら考え、行動する</h3></div>
+                </div>
+            </div>
+        </section>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+        <!-- 03 Selected Work -->
+        <section class="work-section">
+            <div class="section-sticky">
+                <div>
+                    <div class="work-header">
+                        <div>
+                            <small class="work-label">03 — SELECTED WORK</small>
+                            <div class="work-title">Projects.</div>
+                        </div>
+                        <div class="work-count">5 pieces · 2022—2024</div>
+                    </div>
+                    <div class="project-list">
+                        <div class="project-item"><div class="p-num">01</div><div class="p-name">My Portfolio</div><div class="p-desc">Self-branded site</div><div class="p-cat">WEB</div><div class="p-year">2024</div></div>
+                        <div class="project-item"><div class="p-num">02</div><div class="p-name">MOVIE BUDDY</div><div class="p-desc">Companion app</div><div class="p-cat">MOBILE</div><div class="p-year">2024</div></div>
+                        <div class="project-item"><div class="p-num">03</div><div class="p-name">Emma</div><div class="p-desc">Identity</div><div class="p-cat">GRAPHIC</div><div class="p-year">2023</div></div>
+                        <div class="project-item"><div class="p-num">04</div><div class="p-name">Relay</div><div class="p-desc">Editorial</div><div class="p-cat">GRAPHIC</div><div class="p-year">2023</div></div>
+                        <div class="project-item"><div class="p-num">05</div><div class="p-name">ENJIN</div><div class="p-desc">Brand mark</div><div class="p-cat">GRAPHIC</div><div class="p-year">2022</div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 04 Career -->
+        <section class="career-section" id="career">
+            <div class="section-sticky">
+                <div>
+                    <small class="section-label">04 — CAREER</small>
+                    <h2 class="career-title">Path so far.</h2>
+                    <div class="career-layout">
+                        <div class="timeline">
+                            <div class="timeline-node"><span class="time-year">2024</span><div class="time-title">Layout Artist — Third Space Production</div></div>
+                            <div class="timeline-node"><span class="time-year">2023</span><div class="time-title">Customer Service — LULL, Inc.</div></div>
+                            <div class="timeline-node"><span class="time-year">2022</span><div class="time-title">Google UX Design Professional</div></div>
+                            <div class="timeline-node"><span class="time-year">2019</span><div class="time-title">Self-study: AI & Marketing</div></div>
+                        </div>
+                        <div class="career-cards">
+                            <div class="career-card card-white">
+                                <small class="card-label">A QUESTION</small>
+                                <div class="card-q-text">この人生が終わるまで、必ずやってみたいことは何？</div>
+                                <div class="card-footer">— Kio asks you.</div>
+                            </div>
+                            <div class="career-card card-black">
+                                <small class="card-label">CURRENTLY</small>
+                                <div class="card-q-text card-q-text-sm">AIと感性を編む、次のプロジェクトを構想中。</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 05 Contact -->
+        <section class="contact-section" id="contact-section">
+            <div class="section-sticky">
+                <div>
+                    <div class="hero-title">Let's make<br>something <i>unusual.</i></div>
+                    <div class="btn-group">
+                        <a href="mailto:hello@kio-portfolio.com" class="btn btn-black">hello@kio-portfolio.com →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
 
     <script>
-        /**
-         * Base Setup
-         */
-        const canvas = document.querySelector('#webgl');
-        const scene = new THREE.Scene();
-        const size = { width: window.innerWidth, height: window.innerHeight };
+        gsap.registerPlugin(ScrollTrigger);
 
-        // Camera
-        const camera = new THREE.PerspectiveCamera(75, size.width / size.height, 0.1, 1000);
-        camera.position.set(0, 30, 60); // 初期位置：鳥瞰図
+        // ── Mouse parallax ──────────────────────────────
+        let tmx = 0, tmy = 0, mx = 0, my = 0;
+        document.addEventListener('mousemove', e => {
+            tmx = (e.clientX / innerWidth  - 0.5) * 2;
+            tmy = (e.clientY / innerHeight - 0.5) * 2;
+        });
+
+        // ── Renderer ─────────────────────────────────────
+        const canvas   = document.querySelector('#webgl');
+        const scene    = new THREE.Scene();
+        const camera   = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000);
+        camera.position.set(0, 30, 60);
         scene.add(camera);
 
-        // Renderer
-        const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
-        renderer.setSize(size.width, size.height);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        renderer.setSize(innerWidth, innerHeight);
+        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
-        /**
-         * Monument - 建築的なワイヤーフレーム構造体
-         * 本来はBlender等で作ったGLBをロードするのが理想ですが、
-         * ここではプログラムで「複雑な構造」をシミュレートします。
-         */
+        // ── Material registry (dark/light mode) ──────────
+        const sceneMats = [];
+        function mkMat(opacity) {
+            const m = new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true, transparent: true, opacity });
+            sceneMats.push(m);
+            return m;
+        }
+
+        // ── Scene objects ─────────────────────────────────
         const group = new THREE.Group();
         scene.add(group);
 
-        const material = new THREE.MeshBasicMaterial({
-            color: 0xffffff,
-            wireframe: true,
-            transparent: true,
-            opacity: 0.2
-        });
-
-        // 中心部のドーム (Keyframe 1のターゲット)
-        const dome = new THREE.Mesh(new THREE.IcosahedronGeometry(10, 4), material);
+        // Dome — Profile focal point
+        const dome = new THREE.Mesh(new THREE.IcosahedronGeometry(10, 4), mkMat(0.20));
         dome.position.set(-15, 0, 0);
         group.add(dome);
 
-        // 曲線の構造体 (Keyframe 2のターゲット)
-        const torus = new THREE.Mesh(new THREE.TorusKnotGeometry(12, 3, 200, 16), material);
+        // TorusKnot — Work focal point
+        const torus = new THREE.Mesh(new THREE.TorusKnotGeometry(12, 3, 200, 16), mkMat(0.18));
         torus.position.set(20, 10, -20);
         torus.rotation.x = Math.PI / 2;
         group.add(torus);
 
-        // ヘリカルタワー (Keyframe 3のターゲット)
-        const tower = new THREE.Mesh(new THREE.CylinderGeometry(2, 5, 40, 12, 20, true), material);
+        // Tower — Contact focal point
+        const tower = new THREE.Mesh(new THREE.CylinderGeometry(2, 5, 40, 12, 20, true), mkMat(0.22));
         tower.position.set(0, 15, -50);
         group.add(tower);
 
-        // 地面のグリッド
-        const grid = new THREE.GridHelper(200, 50, 0xffffff, 0x222222);
-        grid.position.y = -5;
-        scene.add(grid);
+        // Ground plane (wireframe for dark mode compat)
+        const groundGeo = new THREE.PlaneGeometry(200, 200, 50, 50);
+        groundGeo.rotateX(-Math.PI / 2);
+        const ground = new THREE.Mesh(groundGeo, mkMat(0.07));
+        ground.position.y = -5;
+        scene.add(ground);
 
-        /**
-         * Scroll Animation with GSAP
-         */
-        gsap.registerPlugin(ScrollTrigger);
+        // ── Intermediate camera target (GSAP writes here) ─
+        // Separating from camera so mouse parallax can be
+        // applied on top without conflicting with GSAP.
+        const cam = { x: 0, y: 30, z: 60, rx: -0.3, ry: 0 };
 
         const tl = gsap.timeline({
             scrollTrigger: {
-                trigger: "body",
-                start: "top top",
-                end: "bottom bottom",
-                scrub: 1, // スクロールに滑らかに追従
+                trigger: '.content',
+                start: 'top top',
+                end:   'bottom bottom',
+                scrub: 1,
             }
         });
 
-        // スクロールに応じたカメラワークの定義
         tl
-        // 1. ドームへズームイン (About Me)
-        .to(camera.position, { x: -10, y: 2, z: 20 }, 0)
-        .to(camera.rotation, { x: 0, y: -0.5, z: 0 }, 0)
-        .to("#section1 .content", { opacity: 1, y: 0 }, 0.1)
+        // 01 Hero — bird's eye
+        .to(cam, { x:   0, y: 30, z:  60, rx: -0.3, ry:  0   }, 0)
+        // 02 Profile — zoom to dome
+        .to(cam, { x: -10, y:  2, z:  20, rx:  0,   ry: -0.5  }, 1)
+        // 03 Work — torus knot
+        .to(cam, { x:  25, y: 15, z:  10, rx: -0.4, ry:  0.6  }, 2)
+        // 04 Career — fly between structures
+        .to(cam, { x:   5, y:  8, z: -10, rx:  0.2, ry:  0.1  }, 3)
+        // 05 Contact — look up at tower
+        .to(cam, { x:   0, y:  2, z: -20, rx:  0.8, ry:  0    }, 4);
 
-        // 2. 次の構造体へ移動 (Works)
-        .to(camera.position, { x: 25, y: 15, z: 10 }, 1)
-        .to(camera.rotation, { x: -0.5, y: 0.5, z: 0 }, 1)
-        .to("#section1 .content", { opacity: 0, y: -50 }, 1)
-        .to("#section2 .content", { opacity: 1, y: 0 }, 1.1)
-
-        // 3. タワーを見上げる (Contact)
-        .to(camera.position, { x: 0, y: 2, z: -20 }, 2)
-        .to(camera.rotation, { x: 0.8, y: 0, z: 0 }, 2)
-        .to("#section2 .content", { opacity: 0, y: -50 }, 2)
-        .to("#section3 .content", { opacity: 1, y: 0 }, 2.1);
-
-        /**
-         * Resize handler
-         */
-        window.addEventListener('resize', () => {
-            size.width = window.innerWidth;
-            size.height = window.innerHeight;
-            camera.aspect = size.width / size.height;
-            camera.updateProjectionMatrix();
-            renderer.setSize(size.width, size.height);
-        });
-
-        /**
-         * Animation Loop
-         */
-        function animate() {
+        // ── Animation loop ──────────────────────────────
+        (function animate() {
             requestAnimationFrame(animate);
-            // わずかに回転させて動的な印象を与える
-            group.children.forEach(mesh => {
-                mesh.rotation.y += 0.001;
-            });
-            renderer.render(scene, camera);
-        }
-        animate();
 
+            mx += (tmx - mx) * 0.04;
+            my += (tmy - my) * 0.04;
+
+            // Slow rotation on all group children
+            group.children.forEach(m => { m.rotation.y += 0.001; });
+
+            // Set camera from GSAP target + mouse parallax offset
+            camera.position.set(cam.x + mx * 2.0, cam.y - my * 1.2, cam.z);
+            camera.rotation.set(cam.rx, cam.ry, 0);
+
+            renderer.render(scene, camera);
+        })();
+
+        // ── Dark / Light mode ───────────────────────────
+        function toggleMode() {
+            const isDark = document.body.classList.toggle('dark-mode');
+            const c = isDark ? 1 : 0;
+            sceneMats.forEach(m => gsap.to(m.color, { r: c, g: c, b: c, duration: 0.8 }));
+        }
+
+        // ── Live clock JST ──────────────────────────────
+        function updateClock() {
+            const jst = new Date(Date.now() + 9 * 3600000);
+            const pad = n => String(n).padStart(2, '0');
+            document.getElementById('clock').textContent =
+                `● ${pad(jst.getUTCHours())}:${pad(jst.getUTCMinutes())}:${pad(jst.getUTCSeconds())} JST`;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        // ── Resize ──────────────────────────────────────
+        window.addEventListener('resize', () => {
+            camera.aspect = innerWidth / innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(innerWidth, innerHeight);
+        });
     </script>
 </body>
 </html>
